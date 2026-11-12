@@ -1,988 +1,1946 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perguntas Sem Filtro · Rede</title>
-<meta name="description" content="Um baralho de 50 perguntas da Rede pra sair do automático, ouvir alguém de verdade e começar conversas que importam.">
-<meta name="theme-color" content="#07080a">
-<meta property="og:title" content="Perguntas Sem Filtro · Rede">
-<meta property="og:description" content="Puxe uma carta. 50 perguntas pra conversas reais. Uma iniciativa Rede.">
-<link rel="icon" type="image/png" href="assets/rede-favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#07080a;
-    --text:#f3f4f0;
-    --muted:#8b918c;
-    --line:rgba(255,255,255,.09);
-    --accent:#c9f94a;
-    --accent-soft:rgba(201,249,74,.16);
-    --font-display:'Anton','Arial Narrow',Impact,sans-serif;
-    --font-body:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{color-scheme:dark;-webkit-text-size-adjust:100%}
-  body{
-    font-family:var(--font-body);
-    background:var(--bg);
-    color:var(--text);
-    min-height:100dvh;
-    overflow-x:hidden;
-    -webkit-font-smoothing:antialiased;
-  }
-  button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
-  svg{display:block}
-  ::selection{background:var(--accent);color:#0a0c08}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perguntas Sem Filtro · Rede</title>
+    <meta
+      name="description"
+      content="Um baralho de 50 perguntas da Rede pra sair do automático, ouvir alguém de verdade e começar conversas que importam."
+    />
+    <meta name="theme-color" content="#07080a" />
+    <meta property="og:title" content="Perguntas Sem Filtro · Rede" />
+    <meta
+      property="og:description"
+      content="Puxe uma carta. 50 perguntas pra conversas reais. Uma iniciativa Rede."
+    />
+    <link rel="icon" type="image/png" href="assets/rede-favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #07080a;
+        --text: #f3f4f0;
+        --muted: #8b918c;
+        --line: rgba(255, 255, 255, 0.09);
+        --accent: #c9f94a;
+        --accent-soft: rgba(201, 249, 74, 0.16);
+        --font-display: "Anton", "Arial Narrow", Impact, sans-serif;
+        --font-body:
+          "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html {
+        color-scheme: dark;
+        -webkit-text-size-adjust: 100%;
+      }
+      body {
+        font-family: var(--font-body);
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100dvh;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+      button {
+        font: inherit;
+        color: inherit;
+        background: none;
+        border: 0;
+        cursor: pointer;
+      }
+      svg {
+        display: block;
+      }
+      ::selection {
+        background: var(--accent);
+        color: #0a0c08;
+      }
 
-  /* ---------- backdrop ---------- */
-  .bg-grid{
-    position:fixed;inset:0;z-index:0;pointer-events:none;
-    background-image:
-      linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
-      linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
-    background-size:64px 64px;
-    -webkit-mask-image:radial-gradient(ellipse 85% 70% at 50% 38%,#000 20%,transparent 78%);
-    mask-image:radial-gradient(ellipse 85% 70% at 50% 38%,#000 20%,transparent 78%);
-  }
-  .glow{position:fixed;border-radius:50%;filter:blur(110px);pointer-events:none;z-index:0}
-  .glow-1{width:58vw;aspect-ratio:1;background:var(--accent);top:-34%;right:-16%;opacity:.10}
-  .glow-2{width:52vw;aspect-ratio:1;background:#ff5a1f;bottom:-38%;left:-20%;opacity:.07}
-  .noise{
-    position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
-  }
+      /* ---------- backdrop ---------- */
+      .bg-grid {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+          linear-gradient(
+            90deg,
+            rgba(255, 255, 255, 0.035) 1px,
+            transparent 1px
+          );
+        background-size: 64px 64px;
+        -webkit-mask-image: radial-gradient(
+          ellipse 85% 70% at 50% 38%,
+          #000 20%,
+          transparent 78%
+        );
+        mask-image: radial-gradient(
+          ellipse 85% 70% at 50% 38%,
+          #000 20%,
+          transparent 78%
+        );
+      }
+      .glow {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(110px);
+        pointer-events: none;
+        z-index: 0;
+      }
+      .glow-1 {
+        width: 58vw;
+        aspect-ratio: 1;
+        background: var(--accent);
+        top: -34%;
+        right: -16%;
+        opacity: 0.1;
+      }
+      .glow-2 {
+        width: 52vw;
+        aspect-ratio: 1;
+        background: #ff5a1f;
+        bottom: -38%;
+        left: -20%;
+        opacity: 0.07;
+      }
+      .noise {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        pointer-events: none;
+        opacity: 0.05;
+        mix-blend-mode: overlay;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+      }
 
-  /* ---------- topbar ---------- */
-  .topbar{
-    position:relative;z-index:20;
-    max-width:1280px;margin:0 auto;
-    padding:22px clamp(18px,4vw,48px);
-    display:flex;align-items:center;justify-content:space-between;gap:16px;
-  }
-  .brand{display:flex;align-items:center;gap:13px;user-select:none}
-  .brand-logo{
-    height:50px;width:auto;flex:0 0 auto;
-    filter:drop-shadow(0 4px 16px rgba(201,249,74,.2));
-  }
-  .brand-name{
-    display:flex;flex-direction:column;line-height:1.02;
-    font-size:12px;font-weight:800;letter-spacing:.19em;text-transform:uppercase;
-  }
-  .brand-name span:last-child{color:var(--accent)}
-  .topbar-actions{display:flex;align-items:center;gap:9px}
-  .icon-btn{
-    width:42px;height:42px;border-radius:50%;display:grid;place-items:center;
-    border:1px solid var(--line);color:var(--muted);
-    background:rgba(255,255,255,.02);
-    transition:color .2s,border-color .2s,background .2s,transform .2s;
-  }
-  .icon-btn:hover{color:var(--accent);border-color:rgba(201,249,74,.45);background:rgba(201,249,74,.06);transform:translateY(-1px)}
-  .icon-btn:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-  .icon-btn svg{width:18px;height:18px}
-  .sound-off{display:none}
-  body.muted .sound-on{display:none}
-  body.muted .sound-off{display:block}
+      /* ---------- topbar ---------- */
+      .topbar {
+        position: relative;
+        z-index: 20;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 22px clamp(18px, 4vw, 48px);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 13px;
+        user-select: none;
+      }
+      .brand-logo {
+        height: 50px;
+        width: auto;
+        flex: 0 0 auto;
+        filter: drop-shadow(0 4px 16px rgba(201, 249, 74, 0.2));
+      }
+      .brand-name {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.02;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.19em;
+        text-transform: uppercase;
+      }
+      .brand-name span:last-child {
+        color: var(--accent);
+      }
+      .topbar-actions {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .icon-btn {
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        border: 1px solid var(--line);
+        color: var(--muted);
+        background: rgba(255, 255, 255, 0.02);
+        transition:
+          color 0.2s,
+          border-color 0.2s,
+          background 0.2s,
+          transform 0.2s;
+      }
+      .icon-btn:hover {
+        color: var(--accent);
+        border-color: rgba(201, 249, 74, 0.45);
+        background: rgba(201, 249, 74, 0.06);
+        transform: translateY(-1px);
+      }
+      .icon-btn:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+      .icon-btn svg {
+        width: 18px;
+        height: 18px;
+      }
+      .sound-off {
+        display: none;
+      }
+      body.muted .sound-on {
+        display: none;
+      }
+      body.muted .sound-off {
+        display: block;
+      }
 
-  /* ---------- hero / layout ---------- */
-  .hero{
-    position:relative;z-index:2;
-    max-width:1280px;margin:0 auto;
-    padding:clamp(8px,1.5vw,24px) clamp(18px,4vw,48px) clamp(32px,5vw,64px);
-    display:grid;grid-template-columns:1.05fr .9fr;
-    gap:clamp(30px,5vw,80px);
-    align-items:center;
-    min-height:calc(100dvh - 205px);
-  }
-  .intro{max-width:620px}
-  .eyebrow{
-    display:inline-flex;align-items:center;gap:9px;
-    font-size:10px;font-weight:700;letter-spacing:.19em;text-transform:uppercase;
-    color:var(--muted);border:1px solid var(--line);background:rgba(255,255,255,.02);
-    padding:8px 14px;border-radius:999px;
-  }
-  .eyebrow-network{color:var(--accent);font-weight:800;letter-spacing:.19em}
-  .eyebrow-sep{width:1px;height:10px;background:rgba(255,255,255,.22)}
-  .pulse-dot{
-    width:6px;height:6px;border-radius:50%;background:var(--accent);
-    box-shadow:0 0 0 0 rgba(201,249,74,.55);
-    animation:dotPulse 2.4s ease-out infinite;
-  }
-  h1{
-    font-family:var(--font-display);font-weight:400;
-    font-size:clamp(48px,5.6vw,86px);
-    line-height:.92;letter-spacing:.005em;text-transform:uppercase;
-    margin:24px 0 22px;
-  }
-  h1 span{display:block}
-  h1 .accent{color:var(--accent);transform:rotate(-1deg);transform-origin:left center}
-  .sub{
-    color:var(--muted);font-size:clamp(14px,1.15vw,16.5px);line-height:1.65;
-    max-width:42ch;
-  }
-  .sub strong{color:rgba(243,244,240,.85);font-weight:600}
+      /* ---------- hero / layout ---------- */
+      .hero {
+        position: relative;
+        z-index: 2;
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: clamp(8px, 1.5vw, 24px) clamp(18px, 4vw, 48px)
+          clamp(32px, 5vw, 64px);
+        display: grid;
+        grid-template-columns: 1.05fr 0.9fr;
+        gap: clamp(30px, 5vw, 80px);
+        align-items: center;
+        min-height: calc(100dvh - 205px);
+      }
+      .intro {
+        max-width: 620px;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.19em;
+        text-transform: uppercase;
+        color: var(--muted);
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.02);
+        padding: 8px 14px;
+        border-radius: 999px;
+      }
+      .eyebrow-network {
+        color: var(--accent);
+        font-weight: 800;
+        letter-spacing: 0.19em;
+      }
+      .eyebrow-sep {
+        width: 1px;
+        height: 10px;
+        background: rgba(255, 255, 255, 0.22);
+      }
+      .pulse-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 0 rgba(201, 249, 74, 0.55);
+        animation: dotPulse 2.4s ease-out infinite;
+      }
+      h1 {
+        font-family: var(--font-display);
+        font-weight: 400;
+        font-size: clamp(48px, 5.6vw, 86px);
+        line-height: 0.92;
+        letter-spacing: 0.005em;
+        text-transform: uppercase;
+        margin: 24px 0 22px;
+      }
+      h1 span {
+        display: block;
+      }
+      h1 .accent {
+        color: var(--accent);
+        transform: rotate(-1deg);
+        transform-origin: left center;
+      }
+      .sub {
+        color: var(--muted);
+        font-size: clamp(14px, 1.15vw, 16.5px);
+        line-height: 1.65;
+        max-width: 42ch;
+      }
+      .sub strong {
+        color: rgba(243, 244, 240, 0.85);
+        font-weight: 600;
+      }
 
-  .status{
-    display:flex;align-items:flex-end;gap:clamp(22px,3vw,42px);
-    margin-top:clamp(28px,4vw,46px);padding-top:24px;
-    border-top:1px solid var(--line);max-width:430px;
-    flex-wrap:wrap;
-  }
-  .status-item{display:flex;flex-direction:column;gap:7px}
-  .status-kicker{
-    font-size:9px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);
-  }
-  .level-name{font-size:14px;font-weight:600;color:var(--text);min-height:20px}
-  .meter{width:clamp(140px,17vw,190px);height:5px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden}
-  .meter-fill{
-    display:block;height:100%;width:0%;border-radius:inherit;
-    background:linear-gradient(90deg,#9de01f,var(--accent));
-    box-shadow:0 0 12px rgba(201,249,74,.55);
-    transition:width .6s cubic-bezier(.22,1,.36,1);
-  }
-  .count{flex-direction:row;align-items:baseline;gap:9px}
-  .count-num{
-    font-family:var(--font-display);font-size:38px;line-height:.8;color:var(--accent);
-    font-variant-numeric:tabular-nums;
-  }
-  .count .status-kicker{max-width:70px;line-height:1.3}
+      .status {
+        display: flex;
+        align-items: flex-end;
+        gap: clamp(22px, 3vw, 42px);
+        margin-top: clamp(28px, 4vw, 46px);
+        padding-top: 24px;
+        border-top: 1px solid var(--line);
+        max-width: 430px;
+        flex-wrap: wrap;
+      }
+      .status-item {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+      }
+      .status-kicker {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .level-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        min-height: 20px;
+      }
+      .meter {
+        width: clamp(140px, 17vw, 190px);
+        height: 5px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.08);
+        overflow: hidden;
+      }
+      .meter-fill {
+        display: block;
+        height: 100%;
+        width: 0%;
+        border-radius: inherit;
+        background: linear-gradient(90deg, #9de01f, var(--accent));
+        box-shadow: 0 0 12px rgba(201, 249, 74, 0.55);
+        transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .count {
+        flex-direction: row;
+        align-items: baseline;
+        gap: 9px;
+      }
+      .count-num {
+        font-family: var(--font-display);
+        font-size: 38px;
+        line-height: 0.8;
+        color: var(--accent);
+        font-variant-numeric: tabular-nums;
+      }
+      .count .status-kicker {
+        max-width: 70px;
+        line-height: 1.3;
+      }
 
-  /* ---------- table / deck ---------- */
-  .table{display:flex;flex-direction:column;align-items:center;gap:22px;justify-self:center}
-  .deck-meta{
-    display:inline-flex;align-items:center;gap:9px;
-    font-size:9px;font-weight:700;letter-spacing:.19em;text-transform:uppercase;color:var(--muted);
-  }
-  .deck-meta::before{
-    content:"";width:5px;height:5px;border-radius:1px;background:var(--accent);
-    transform:rotate(45deg);
-  }
-  .deck-area{
-    position:relative;width:min(322px,76vw);aspect-ratio:5/7;margin-top:2px;
-  }
-  .deck-area::before{
-    content:"";position:absolute;inset:-16% -22%;z-index:-1;pointer-events:none;
-    background:radial-gradient(circle at 50% 46%,rgba(201,249,74,.13),transparent 62%);
-    filter:blur(10px);
-  }
-  .deck{
-    position:absolute;inset:0;cursor:pointer;perspective:1600px;
-    -webkit-tap-highlight-color:transparent;
-  }
-  .deck:focus-visible{outline:none}
-  .deck:focus-visible .card::after{
-    content:"";position:absolute;inset:-7px;border:2px solid var(--accent);border-radius:28px;
-    pointer-events:none;
-  }
+      /* ---------- table / deck ---------- */
+      .table {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 22px;
+        justify-self: center;
+      }
+      .deck-meta {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.19em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .deck-meta::before {
+        content: "";
+        width: 5px;
+        height: 5px;
+        border-radius: 1px;
+        background: var(--accent);
+        transform: rotate(45deg);
+      }
+      .deck-area {
+        position: relative;
+        width: min(322px, 76vw);
+        aspect-ratio: 5/7;
+        margin-top: 2px;
+      }
+      .deck-area::before {
+        content: "";
+        position: absolute;
+        inset: -16% -22%;
+        z-index: -1;
+        pointer-events: none;
+        background: radial-gradient(
+          circle at 50% 46%,
+          rgba(201, 249, 74, 0.13),
+          transparent 62%
+        );
+        filter: blur(10px);
+      }
+      .deck {
+        position: absolute;
+        inset: 0;
+        cursor: pointer;
+        perspective: 1600px;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .deck:focus-visible {
+        outline: none;
+      }
+      .deck:focus-visible .card::after {
+        content: "";
+        position: absolute;
+        inset: -7px;
+        border: 2px solid var(--accent);
+        border-radius: 28px;
+        pointer-events: none;
+      }
 
-  .ghost{
-    position:absolute;inset:0;border-radius:22px;
-    background:linear-gradient(160deg,#c8f247,#a5d91d 70%,#8ec316);
-    border:1px solid rgba(0,0,0,.45);
-    box-shadow:0 24px 50px -20px rgba(0,0,0,.7);
-    transition:transform .55s cubic-bezier(.22,1,.36,1);
-  }
-  .g1{transform:translate(7px,11px) rotate(2.2deg);filter:brightness(.6) saturate(.9)}
-  .g2{transform:translate(-6px,17px) rotate(-1.6deg);filter:brightness(.45) saturate(.8)}
-  .g3{transform:translate(3px,23px) rotate(1deg);filter:brightness(.32) saturate(.7)}
-  .deck.is-revealed .g1{transform:translate(11px,7px) rotate(3.4deg)}
-  .deck.is-revealed .g2{transform:translate(-10px,13px) rotate(-2.6deg)}
-  .deck.is-revealed .g3{transform:translate(5px,19px) rotate(1.8deg)}
+      .ghost {
+        position: absolute;
+        inset: 0;
+        border-radius: 22px;
+        background: linear-gradient(160deg, #c8f247, #a5d91d 70%, #8ec316);
+        border: 1px solid rgba(0, 0, 0, 0.45);
+        box-shadow: 0 24px 50px -20px rgba(0, 0, 0, 0.7);
+        transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+      .g1 {
+        transform: translate(7px, 11px) rotate(2.2deg);
+        filter: brightness(0.6) saturate(0.9);
+      }
+      .g2 {
+        transform: translate(-6px, 17px) rotate(-1.6deg);
+        filter: brightness(0.45) saturate(0.8);
+      }
+      .g3 {
+        transform: translate(3px, 23px) rotate(1deg);
+        filter: brightness(0.32) saturate(0.7);
+      }
+      .deck.is-revealed .g1 {
+        transform: translate(11px, 7px) rotate(3.4deg);
+      }
+      .deck.is-revealed .g2 {
+        transform: translate(-10px, 13px) rotate(-2.6deg);
+      }
+      .deck.is-revealed .g3 {
+        transform: translate(5px, 19px) rotate(1.8deg);
+      }
 
-  .card{
-    --cat:var(--accent);
-    position:absolute;inset:0;z-index:5;
-    border-radius:22px;
-    transform-style:preserve-3d;
-    transition:transform .55s cubic-bezier(.22,1,.36,1),opacity .4s ease,box-shadow .5s ease;
-    box-shadow:0 32px 70px -20px rgba(0,0,0,.85),0 0 0 0 rgba(201,249,74,0),0 0 70px -28px rgba(201,249,74,.75);
-    will-change:transform,opacity;
-  }
-  .deck:hover .card:not(.flipped):not(.exiting){transform:translateY(-7px) rotate(-1.2deg)}
-  .card.flipped{
-    transform:translateY(-8px) rotate(-.5deg);
-    box-shadow:0 38px 90px -26px rgba(0,0,0,.9),0 0 0 1px rgba(255,255,255,.04),0 0 85px -30px var(--cat);
-  }
-  .card.exiting{
-    transform:translateY(-64px) rotate(9deg) scale(.94);
-    opacity:0;
-    transition:transform .4s cubic-bezier(.4,0,1,1),opacity .3s ease-in;
-  }
-  .card.no-transition{transition:none !important}
-  .card-inner{
-    position:absolute;inset:0;border-radius:22px;
-    transform-style:preserve-3d;
-    transition:transform .78s cubic-bezier(.19,1,.22,1);
-  }
-  .card.flipped .card-inner{transform:rotateY(180deg)}
-  .no-transition .card-inner{transition:none !important}
+      .card {
+        --cat: var(--accent);
+        position: absolute;
+        inset: 0;
+        z-index: 5;
+        border-radius: 22px;
+        transform-style: preserve-3d;
+        transition:
+          transform 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.4s ease,
+          box-shadow 0.5s ease;
+        box-shadow:
+          0 32px 70px -20px rgba(0, 0, 0, 0.85),
+          0 0 0 0 rgba(201, 249, 74, 0),
+          0 0 70px -28px rgba(201, 249, 74, 0.75);
+        will-change: transform, opacity;
+      }
+      .deck:hover .card:not(.flipped):not(.exiting) {
+        transform: translateY(-7px) rotate(-1.2deg);
+      }
+      .card.flipped {
+        transform: translateY(-8px) rotate(-0.5deg);
+        box-shadow:
+          0 38px 90px -26px rgba(0, 0, 0, 0.9),
+          0 0 0 1px rgba(255, 255, 255, 0.04),
+          0 0 85px -30px var(--cat);
+      }
+      .card.exiting {
+        transform: translateY(-64px) rotate(9deg) scale(0.94);
+        opacity: 0;
+        transition:
+          transform 0.4s cubic-bezier(0.4, 0, 1, 1),
+          opacity 0.3s ease-in;
+      }
+      .card.no-transition {
+        transition: none !important;
+      }
+      .card-inner {
+        position: absolute;
+        inset: 0;
+        border-radius: 22px;
+        transform-style: preserve-3d;
+        transition: transform 0.78s cubic-bezier(0.19, 1, 0.22, 1);
+      }
+      .card.flipped .card-inner {
+        transform: rotateY(180deg);
+      }
+      .no-transition .card-inner {
+        transition: none !important;
+      }
 
-  .card-face{
-    position:absolute;inset:0;border-radius:22px;overflow:hidden;
-    -webkit-backface-visibility:hidden;backface-visibility:hidden;
-  }
+      .card-face {
+        position: absolute;
+        inset: 0;
+        border-radius: 22px;
+        overflow: hidden;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
+      }
 
-  /* ----- card back ----- */
-  .card-back{
-    background:
-      radial-gradient(circle at 22% 0%,rgba(255,255,255,.42),transparent 42%),
-      linear-gradient(160deg,#d9ff63,#b6ec2c 55%,#96cd13);
-    color:#0a0c08;
-    border:1px solid rgba(0,0,0,.35);
-  }
-  .card-back::after{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background:repeating-linear-gradient(-45deg,rgba(0,0,0,.045) 0 2px,transparent 2px 13px);
-  }
-  .back-frame{
-    position:absolute;inset:12px;border:1.5px solid rgba(10,12,8,.62);border-radius:14px;pointer-events:none;
-  }
-  .back-inner{
-    position:absolute;inset:30px 26px;display:flex;flex-direction:column;justify-content:space-between;
-  }
-  .back-top,.back-bottom{
-    display:flex;justify-content:space-between;align-items:center;gap:8px;
-    font-size:8.5px;font-weight:800;letter-spacing:.18em;text-transform:uppercase;opacity:.72;
-  }
-  .back-mid{display:flex;flex-direction:column;align-items:center;text-align:center}
-  .back-q{
-    font-family:var(--font-display);font-size:clamp(96px,9vw,124px);line-height:.62;
-    color:transparent;-webkit-text-stroke:2.5px rgba(10,12,8,.92);
-    transform:rotate(-6deg);margin-bottom:14px;
-  }
-  .back-title{
-    font-family:var(--font-display);font-size:clamp(26px,2.8vw,32px);line-height:.95;
-    text-transform:uppercase;letter-spacing:.015em;
-  }
-  .back-sub{
-    margin-top:11px;font-size:8.5px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
-    border:1px solid rgba(10,12,8,.5);border-radius:999px;padding:5px 11px;opacity:.78;
-  }
-  .back-star{
-    width:9px;height:9px;flex:0 0 auto;border-radius:50%;
-    background:#0a0c08;box-shadow:0 0 0 3px rgba(10,12,8,.15);
-  }
+      /* ----- card back ----- */
+      .card-back {
+        background:
+          radial-gradient(
+            circle at 22% 0%,
+            rgba(255, 255, 255, 0.42),
+            transparent 42%
+          ),
+          linear-gradient(160deg, #d9ff63, #b6ec2c 55%, #96cd13);
+        color: #0a0c08;
+        border: 1px solid rgba(0, 0, 0, 0.35);
+      }
+      .card-back::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          -45deg,
+          rgba(0, 0, 0, 0.045) 0 2px,
+          transparent 2px 13px
+        );
+      }
+      .back-frame {
+        position: absolute;
+        inset: 12px;
+        border: 1.5px solid rgba(10, 12, 8, 0.62);
+        border-radius: 14px;
+        pointer-events: none;
+      }
+      .back-inner {
+        position: absolute;
+        inset: 30px 26px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .back-top,
+      .back-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px;
+        font-size: 8.5px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        opacity: 0.72;
+      }
+      .back-mid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+      .back-q {
+        font-family: var(--font-display);
+        font-size: clamp(96px, 9vw, 124px);
+        line-height: 0.62;
+        color: transparent;
+        -webkit-text-stroke: 2.5px rgba(10, 12, 8, 0.92);
+        transform: rotate(-6deg);
+        margin-bottom: 14px;
+      }
+      .back-title {
+        font-family: var(--font-display);
+        font-size: clamp(26px, 2.8vw, 32px);
+        line-height: 0.95;
+        text-transform: uppercase;
+        letter-spacing: 0.015em;
+      }
+      .back-sub {
+        margin-top: 11px;
+        font-size: 8.5px;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        border: 1px solid rgba(10, 12, 8, 0.5);
+        border-radius: 999px;
+        padding: 5px 11px;
+        opacity: 0.78;
+      }
+      .back-star {
+        width: 9px;
+        height: 9px;
+        flex: 0 0 auto;
+        border-radius: 50%;
+        background: #0a0c08;
+        box-shadow: 0 0 0 3px rgba(10, 12, 8, 0.15);
+      }
 
-  /* ----- card front ----- */
-  .card-front{
-    transform:rotateY(180deg);
-    background:linear-gradient(158deg,#171a1d 0%,#0c0e0f 52%,#0a0c0c 100%);
-    color:var(--text);
-    border:1px solid rgba(255,255,255,.1);
-    padding:24px 23px 20px;
-    display:flex;flex-direction:column;
-  }
-  .card-front::before{
-    content:"";position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(120% 80% at 100% 0%,rgba(201,249,74,.13),transparent 58%);
-    background:radial-gradient(120% 80% at 100% 0%,color-mix(in srgb,var(--cat) 20%,transparent),transparent 58%);
-  }
-  .card-front::after{
-    content:"\201C";position:absolute;top:44px;right:10px;pointer-events:none;
-    font-family:var(--font-display);font-size:150px;line-height:1;color:rgba(255,255,255,.035);
-  }
-  .front-top{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px}
-  .cat-pill{
-    display:inline-flex;align-items:center;gap:7px;
-    font-size:9px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;
-    color:var(--cat);padding:6px 11px;border-radius:999px;
-    border:1px solid rgba(201,249,74,.4);
-    border-color:color-mix(in srgb,var(--cat) 45%,transparent);
-    background:rgba(201,249,74,.08);
-    background:color-mix(in srgb,var(--cat) 13%,transparent);
-    white-space:nowrap;
-  }
-  .cat-dot{
-    width:5px;height:5px;border-radius:50%;background:var(--cat);
-    box-shadow:0 0 8px var(--cat);
-  }
-  .card-num{
-    font-size:9px;font-weight:700;letter-spacing:.14em;color:var(--muted);
-    font-variant-numeric:tabular-nums;white-space:nowrap;
-  }
-  .question{
-    position:relative;z-index:1;flex:1;display:flex;align-items:center;justify-content:center;
-    padding:18px 0;text-align:center;
-    font-weight:800;letter-spacing:-.028em;line-height:1.12;
-    text-wrap:balance;overflow-wrap:break-word;
-    color:#f7f8f4;
-  }
-  .front-bottom{
-    position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:10px;
-    font-size:8px;font-weight:700;letter-spacing:.17em;text-transform:uppercase;
-    color:rgba(255,255,255,.34);
-  }
-  .front-mark{
-    font-family:var(--font-display);font-size:11px;letter-spacing:.06em;
-    color:var(--cat);border:1px solid rgba(255,255,255,.14);
-    padding:3px 6px;border-radius:5px;
-  }
+      /* ----- card front ----- */
+      .card-front {
+        transform: rotateY(180deg);
+        background: linear-gradient(
+          158deg,
+          #171a1d 0%,
+          #0c0e0f 52%,
+          #0a0c0c 100%
+        );
+        color: var(--text);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 24px 23px 20px;
+        display: flex;
+        flex-direction: column;
+      }
+      .card-front::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          120% 80% at 100% 0%,
+          rgba(201, 249, 74, 0.13),
+          transparent 58%
+        );
+        background: radial-gradient(
+          120% 80% at 100% 0%,
+          color-mix(in srgb, var(--cat) 20%, transparent),
+          transparent 58%
+        );
+      }
+      .card-front::after {
+        content: "\201C";
+        position: absolute;
+        top: 44px;
+        right: 10px;
+        pointer-events: none;
+        font-family: var(--font-display);
+        font-size: 150px;
+        line-height: 1;
+        color: rgba(255, 255, 255, 0.035);
+      }
+      .front-top {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .cat-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--cat);
+        padding: 6px 11px;
+        border-radius: 999px;
+        border: 1px solid rgba(201, 249, 74, 0.4);
+        border-color: color-mix(in srgb, var(--cat) 45%, transparent);
+        background: rgba(201, 249, 74, 0.08);
+        background: color-mix(in srgb, var(--cat) 13%, transparent);
+        white-space: nowrap;
+      }
+      .cat-dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: var(--cat);
+        box-shadow: 0 0 8px var(--cat);
+      }
+      .card-num {
+        font-size: 9px;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        color: var(--muted);
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      .question {
+        position: relative;
+        z-index: 1;
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px 0;
+        text-align: center;
+        font-weight: 800;
+        letter-spacing: -0.028em;
+        line-height: 1.12;
+        text-wrap: balance;
+        overflow-wrap: break-word;
+        color: #f7f8f4;
+      }
+      .front-bottom {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        font-size: 8px;
+        font-weight: 700;
+        letter-spacing: 0.17em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.34);
+      }
+      .front-mark {
+        font-family: var(--font-display);
+        font-size: 11px;
+        letter-spacing: 0.06em;
+        color: var(--cat);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        padding: 3px 6px;
+        border-radius: 5px;
+      }
 
-  /* ---------- actions ---------- */
-  .table-actions{display:flex;flex-direction:column;align-items:center;gap:12px;width:100%}
-  .draw-btn{
-    position:relative;display:inline-flex;align-items:center;justify-content:center;gap:14px;
-    min-width:250px;padding:17px 30px;border-radius:14px;
-    background:var(--accent);color:#0a0c08;
-    font-family:var(--font-display);font-size:18px;letter-spacing:.07em;text-transform:uppercase;
-    box-shadow:0 12px 34px -10px rgba(201,249,74,.5),inset 0 -3px 0 rgba(0,0,0,.22);
-    transition:transform .18s ease,box-shadow .25s ease,background .2s ease,opacity .2s ease;
-  }
-  .draw-btn:hover{transform:translateY(-2px);background:#d7ff6b;box-shadow:0 18px 42px -12px rgba(201,249,74,.6),inset 0 -3px 0 rgba(0,0,0,.22)}
-  .draw-btn:active{transform:translateY(1px)}
-  .draw-btn:focus-visible{outline:2px solid var(--text);outline-offset:4px}
-  .draw-btn.is-busy{opacity:.75;pointer-events:none}
-  .draw-btn svg{width:20px;height:20px;transition:transform .2s ease}
-  .draw-btn:hover svg{transform:translateX(4px)}
-  .hint{font-size:10.5px;color:var(--muted);letter-spacing:.02em;text-align:center}
-  .hint kbd{
-    font-family:inherit;font-size:9.5px;font-weight:700;letter-spacing:.08em;
-    border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;
-    padding:2px 6px;color:rgba(243,244,240,.7);background:rgba(255,255,255,.03);
-  }
+      /* ---------- actions ---------- */
+      .table-actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        width: 100%;
+      }
+      .draw-btn {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        min-width: 250px;
+        padding: 17px 30px;
+        border-radius: 14px;
+        background: var(--accent);
+        color: #0a0c08;
+        font-family: var(--font-display);
+        font-size: 18px;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        box-shadow:
+          0 12px 34px -10px rgba(201, 249, 74, 0.5),
+          inset 0 -3px 0 rgba(0, 0, 0, 0.22);
+        transition:
+          transform 0.18s ease,
+          box-shadow 0.25s ease,
+          background 0.2s ease,
+          opacity 0.2s ease;
+      }
+      .draw-btn:hover {
+        transform: translateY(-2px);
+        background: #d7ff6b;
+        box-shadow:
+          0 18px 42px -12px rgba(201, 249, 74, 0.6),
+          inset 0 -3px 0 rgba(0, 0, 0, 0.22);
+      }
+      .draw-btn:active {
+        transform: translateY(1px);
+      }
+      .draw-btn:focus-visible {
+        outline: 2px solid var(--text);
+        outline-offset: 4px;
+      }
+      .draw-btn.is-busy {
+        opacity: 0.75;
+        pointer-events: none;
+      }
+      .draw-btn svg {
+        width: 20px;
+        height: 20px;
+        transition: transform 0.2s ease;
+      }
+      .draw-btn:hover svg {
+        transform: translateX(4px);
+      }
+      .hint {
+        font-size: 10.5px;
+        color: var(--muted);
+        letter-spacing: 0.02em;
+        text-align: center;
+      }
+      .hint kbd {
+        font-family: inherit;
+        font-size: 9.5px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        border: 1px solid var(--line);
+        border-bottom-width: 2px;
+        border-radius: 5px;
+        padding: 2px 6px;
+        color: rgba(243, 244, 240, 0.7);
+        background: rgba(255, 255, 255, 0.03);
+      }
 
-  /* ---------- footer ---------- */
-  .site-footer{
-    position:relative;z-index:2;
-    border-top:1px solid var(--line);
-    background:linear-gradient(180deg,rgba(255,255,255,.015),rgba(0,0,0,0) 80%);
-  }
-  .footer-inner{
-    max-width:1280px;margin:0 auto;
-    padding:24px clamp(18px,4vw,48px) 32px;
-    display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;
-  }
-  .footer-brand{display:flex;align-items:center;gap:14px}
-  .footer-logo{
-    height:60px;width:auto;
-    filter:drop-shadow(0 0 18px rgba(201,249,74,.16));
-  }
-  .footer-id{display:flex;flex-direction:column;gap:3px}
-  .footer-network{
-    font-family:var(--font-display);font-size:24px;line-height:.9;
-    letter-spacing:.06em;text-transform:uppercase;color:var(--text);
-  }
-  .footer-church{
-    font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
-  }
-  .footer-address{
-    font-style:normal;font-size:12px;line-height:1.7;color:var(--muted);text-align:right;
-  }
-  .footer-label{
-    display:block;margin-bottom:2px;
-    font-size:8.5px;font-weight:800;letter-spacing:.19em;text-transform:uppercase;
-    color:rgba(243,244,240,.38);
-  }
+      /* ---------- footer ---------- */
+      .site-footer {
+        position: relative;
+        z-index: 2;
+        border-top: 1px solid var(--line);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.015),
+          rgba(0, 0, 0, 0) 80%
+        );
+      }
+      .footer-inner {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 24px clamp(18px, 4vw, 48px) 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 28px;
+        flex-wrap: wrap;
+      }
+      .footer-brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+      .footer-logo {
+        height: 60px;
+        width: auto;
+        filter: drop-shadow(0 0 18px rgba(201, 249, 74, 0.16));
+      }
+      .footer-id {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
+      .footer-network {
+        font-family: var(--font-display);
+        font-size: 24px;
+        line-height: 0.9;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        color: var(--text);
+      }
+      .footer-church {
+        font-size: 9px;
+        font-weight: 800;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .footer-contact {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 9px;
+      }
+      .footer-address {
+        font-style: normal;
+        font-size: 12px;
+        line-height: 1.7;
+        color: var(--muted);
+        text-align: right;
+      }
+      .footer-social {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        color: var(--muted);
+        text-decoration: none;
+        transition: color 0.2s ease;
+      }
+      .footer-social:hover {
+        color: var(--accent);
+      }
+      .footer-social:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+        border-radius: 4px;
+      }
+      .footer-social svg {
+        width: 15px;
+        height: 15px;
+        flex: 0 0 auto;
+      }
+      .footer-label {
+        display: block;
+        margin-bottom: 2px;
+        font-size: 8.5px;
+        font-weight: 800;
+        letter-spacing: 0.19em;
+        text-transform: uppercase;
+        color: rgba(243, 244, 240, 0.38);
+      }
 
-  /* ---------- toast / fx ---------- */
-  .toast{
-    position:fixed;left:50%;bottom:26px;z-index:60;
-    transform:translate(-50%,14px);opacity:0;pointer-events:none;
-    background:#101315;border:1px solid rgba(201,249,74,.35);color:var(--text);
-    font-size:12px;font-weight:500;letter-spacing:.01em;
-    padding:12px 20px;border-radius:999px;white-space:nowrap;
-    box-shadow:0 20px 50px -15px rgba(0,0,0,.8);
-    transition:opacity .3s ease,transform .3s ease;
-  }
-  .toast.show{opacity:1;transform:translate(-50%,0)}
-  .fx{position:fixed;inset:0;z-index:55;pointer-events:none;overflow:hidden}
+      /* ---------- toast / fx ---------- */
+      .toast {
+        position: fixed;
+        left: 50%;
+        bottom: 26px;
+        z-index: 60;
+        transform: translate(-50%, 14px);
+        opacity: 0;
+        pointer-events: none;
+        background: #101315;
+        border: 1px solid rgba(201, 249, 74, 0.35);
+        color: var(--text);
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 0.01em;
+        padding: 12px 20px;
+        border-radius: 999px;
+        white-space: nowrap;
+        box-shadow: 0 20px 50px -15px rgba(0, 0, 0, 0.8);
+        transition:
+          opacity 0.3s ease,
+          transform 0.3s ease;
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translate(-50%, 0);
+      }
+      .fx {
+        position: fixed;
+        inset: 0;
+        z-index: 55;
+        pointer-events: none;
+        overflow: hidden;
+      }
 
-  /* ---------- entrance ---------- */
-  @keyframes introUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-  @keyframes dealIn{from{opacity:0;transform:translateY(22px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
-  @keyframes dotPulse{0%,100%{box-shadow:0 0 0 0 rgba(201,249,74,.55)}55%{box-shadow:0 0 0 6px rgba(201,249,74,0)}}
-  .intro > *{animation:introUp .7s cubic-bezier(.22,1,.36,1) both}
-  .intro > :nth-child(2){animation-delay:.06s}
-  .intro > :nth-child(3){animation-delay:.12s}
-  .intro > :nth-child(4){animation-delay:.18s}
-  .deck-meta{animation:introUp .7s .12s cubic-bezier(.22,1,.36,1) both}
-  .deck-area{animation:dealIn .8s .18s cubic-bezier(.22,1,.36,1) both}
-  .table-actions{animation:introUp .7s .26s cubic-bezier(.22,1,.36,1) both}
+      /* ---------- entrance ---------- */
+      @keyframes introUp {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes dealIn {
+        from {
+          opacity: 0;
+          transform: translateY(22px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+      @keyframes dotPulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(201, 249, 74, 0.55);
+        }
+        55% {
+          box-shadow: 0 0 0 6px rgba(201, 249, 74, 0);
+        }
+      }
+      .intro > * {
+        animation: introUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      .intro > :nth-child(2) {
+        animation-delay: 0.06s;
+      }
+      .intro > :nth-child(3) {
+        animation-delay: 0.12s;
+      }
+      .intro > :nth-child(4) {
+        animation-delay: 0.18s;
+      }
+      .deck-meta {
+        animation: introUp 0.7s 0.12s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      .deck-area {
+        animation: dealIn 0.8s 0.18s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
+      .table-actions {
+        animation: introUp 0.7s 0.26s cubic-bezier(0.22, 1, 0.36, 1) both;
+      }
 
-  /* ---------- responsive ---------- */
-  @media (max-width:980px){
-    .hero{
-      grid-template-columns:1fr;justify-items:center;
-      min-height:0;padding-top:10px;gap:42px;
-      text-align:center;
-    }
-    .intro{max-width:600px;display:flex;flex-direction:column;align-items:center}
-    .sub{max-width:44ch}
-    .status{justify-content:center;width:100%}
-    .table{width:100%}
-    .brand-name{font-size:11px}
-  }
-  @media (max-width:700px){
-    .footer-inner{align-items:flex-start;flex-direction:column;gap:18px;padding-bottom:28px}
-    .footer-address{text-align:left}
-  }
-  @media (max-width:560px){
-    .topbar{padding:16px 18px}
-    .brand-logo{height:42px}
-    .brand-name{font-size:10px;letter-spacing:.16em}
-    .icon-btn{width:38px;height:38px}
-    h1{font-size:clamp(42px,12.5vw,58px)}
-    .deck-area{width:min(300px,78vw)}
-    .draw-btn{width:100%;min-width:0}
-    .table-actions{width:min(300px,78vw)}
-    .toast{white-space:normal;text-align:center;max-width:88vw;bottom:18px}
-    .status{gap:24px}
-    .count .status-kicker{max-width:none}
-    .footer-logo{height:52px}
-    .footer-network{font-size:22px}
-  }
-  @media (prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
-  }
-</style>
-</head>
-<body>
-  <div class="bg-grid" aria-hidden="true"></div>
-  <div class="glow glow-1" aria-hidden="true"></div>
-  <div class="glow glow-2" aria-hidden="true"></div>
-  <div class="noise" aria-hidden="true"></div>
+      /* ---------- responsive ---------- */
+      @media (max-width: 980px) {
+        .hero {
+          grid-template-columns: 1fr;
+          justify-items: center;
+          min-height: 0;
+          padding-top: 10px;
+          gap: 42px;
+          text-align: center;
+        }
+        .intro {
+          max-width: 600px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+        .sub {
+          max-width: 44ch;
+        }
+        .status {
+          justify-content: center;
+          width: 100%;
+        }
+        .table {
+          width: 100%;
+        }
+        .brand-name {
+          font-size: 11px;
+        }
+      }
+      @media (max-width: 700px) {
+        .footer-inner {
+          align-items: flex-start;
+          flex-direction: column;
+          gap: 18px;
+          padding-bottom: 28px;
+        }
+        .footer-address {
+          text-align: left;
+        }
+        .footer-contact {
+          align-items: flex-start;
+        }
+      }
+      @media (max-width: 560px) {
+        .topbar {
+          padding: 16px 18px;
+        }
+        .brand-logo {
+          height: 42px;
+        }
+        .brand-name {
+          font-size: 10px;
+          letter-spacing: 0.16em;
+        }
+        .icon-btn {
+          width: 38px;
+          height: 38px;
+        }
+        h1 {
+          font-size: clamp(42px, 12.5vw, 58px);
+        }
+        .deck-area {
+          width: min(300px, 78vw);
+        }
+        .draw-btn {
+          width: 100%;
+          min-width: 0;
+        }
+        .table-actions {
+          width: min(300px, 78vw);
+        }
+        .toast {
+          white-space: normal;
+          text-align: center;
+          max-width: 88vw;
+          bottom: 18px;
+        }
+        .status {
+          gap: 24px;
+        }
+        .count .status-kicker {
+          max-width: none;
+        }
+        .footer-logo {
+          height: 52px;
+        }
+        .footer-network {
+          font-size: 22px;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bg-grid" aria-hidden="true"></div>
+    <div class="glow glow-1" aria-hidden="true"></div>
+    <div class="glow glow-2" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
 
-  <header class="topbar">
-    <div class="brand" aria-label="Rede · Perguntas Sem Filtro">
-      <img class="brand-logo" src="assets/rede-logo.png" alt="" width="295" height="320">
-      <span class="brand-name"><span>Perguntas</span><span>Sem Filtro</span></span>
-    </div>
-    <div class="topbar-actions">
-      <button class="icon-btn" id="soundBtn" type="button" aria-pressed="true" aria-label="Desativar som" title="Som">
-        <svg class="sound-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/>
-        </svg>
-        <svg class="sound-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="m16 9 5 6"/><path d="m21 9-5 6"/>
-        </svg>
-      </button>
-      <button class="icon-btn" id="resetBtn" type="button" aria-label="Embaralhar o baralho" title="Embaralhar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path d="m15 15 6 6"/><path d="m4 4 5 5"/>
-        </svg>
-      </button>
-    </div>
-  </header>
-
-  <main class="hero">
-    <section class="intro">
-      <p class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span><span class="eyebrow-network">Rede</span><span class="eyebrow-sep" aria-hidden="true"></span>quebra-gelo pra conversas reais</p>
-      <h1><span>Puxe uma carta.</span><span class="accent">Sem filtro.</span></h1>
-      <p class="sub"><strong>50 perguntas</strong> pra sair do automático e ouvir alguém de verdade. Sem resposta certa, sem pressa — só uma boa conversa começando.</p>
-      <div class="status" aria-label="Progresso da sessão">
-        <div class="status-item">
-          <span class="status-kicker">Nível de conexão</span>
-          <span class="level-name" id="levelLabel">Pronto pra começar</span>
-          <div class="meter" aria-hidden="true"><span class="meter-fill" id="meterFill"></span></div>
-        </div>
-        <div class="status-item count">
-          <span class="count-num" id="drawnCount">0</span>
-          <span class="status-kicker">cartas<br>tiradas</span>
-        </div>
+    <header class="topbar">
+      <div class="brand" aria-label="Rede · Perguntas Sem Filtro">
+        <img
+          class="brand-logo"
+          src="assets/rede-logo.png"
+          alt=""
+          width="295"
+          height="320"
+        />
+        <span class="brand-name"
+          ><span>Perguntas</span><span>Sem Filtro</span></span
+        >
       </div>
-    </section>
+      <div class="topbar-actions">
+        <button
+          class="icon-btn"
+          id="soundBtn"
+          type="button"
+          aria-pressed="true"
+          aria-label="Desativar som"
+          title="Som"
+        >
+          <svg
+            class="sound-on"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+            <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+            <path d="M18.5 5.5a9 9 0 0 1 0 13" />
+          </svg>
+          <svg
+            class="sound-off"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+            <path d="m16 9 5 6" />
+            <path d="m21 9-5 6" />
+          </svg>
+        </button>
+        <button
+          class="icon-btn"
+          id="resetBtn"
+          type="button"
+          aria-label="Embaralhar o baralho"
+          title="Embaralhar"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M16 3h5v5" />
+            <path d="M4 20 21 3" />
+            <path d="M21 16v5h-5" />
+            <path d="m15 15 6 6" />
+            <path d="m4 4 5 5" />
+          </svg>
+        </button>
+      </div>
+    </header>
 
-    <section class="table">
-      <p class="deck-meta" id="deckMeta">Baralho da conexão · 50 perguntas</p>
+    <main class="hero">
+      <section class="intro">
+        <p class="eyebrow">
+          <span class="pulse-dot" aria-hidden="true"></span
+          ><span class="eyebrow-network">Rede</span
+          ><span class="eyebrow-sep" aria-hidden="true"></span>quebra-gelo pra
+          conversas reais
+        </p>
+        <h1>
+          <span>Puxe uma carta.</span><span class="accent">Sem filtro.</span>
+        </h1>
+        <p class="sub">
+          <strong>50 perguntas</strong> pra sair do automático e ouvir alguém de
+          verdade. Sem resposta certa, sem pressa — só uma boa conversa
+          começando.
+        </p>
+        <div class="status" aria-label="Progresso da sessão">
+          <div class="status-item">
+            <span class="status-kicker">Nível de conexão</span>
+            <span class="level-name" id="levelLabel">Pronto pra começar</span>
+            <div class="meter" aria-hidden="true">
+              <span class="meter-fill" id="meterFill"></span>
+            </div>
+          </div>
+          <div class="status-item count">
+            <span class="count-num" id="drawnCount">0</span>
+            <span class="status-kicker">cartas<br />tiradas</span>
+          </div>
+        </div>
+      </section>
 
-      <div class="deck-area">
-        <div class="deck" id="deck" role="button" tabindex="0" aria-label="Baralho de perguntas. Clique para tirar uma carta.">
-          <div class="ghost g3" aria-hidden="true"></div>
-          <div class="ghost g2" aria-hidden="true"></div>
-          <div class="ghost g1" aria-hidden="true"></div>
+      <section class="table">
+        <p class="deck-meta" id="deckMeta">Baralho da conexão · 50 perguntas</p>
 
-          <div class="card" id="card">
-            <div class="card-inner">
-              <div class="card-face card-back">
-                <div class="back-frame" aria-hidden="true"></div>
-                <div class="back-inner">
-                  <div class="back-top"><span>PSF / baralho 01</span><span id="backCount">50 cartas</span></div>
-                  <div class="back-mid">
-                    <span class="back-q" aria-hidden="true">?</span>
-                    <span class="back-title">Perguntas<br>sem filtro</span>
-                    <span class="back-sub">toque para revelar</span>
+        <div class="deck-area">
+          <div
+            class="deck"
+            id="deck"
+            role="button"
+            tabindex="0"
+            aria-label="Baralho de perguntas. Clique para tirar uma carta."
+          >
+            <div class="ghost g3" aria-hidden="true"></div>
+            <div class="ghost g2" aria-hidden="true"></div>
+            <div class="ghost g1" aria-hidden="true"></div>
+
+            <div class="card" id="card">
+              <div class="card-inner">
+                <div class="card-face card-back">
+                  <div class="back-frame" aria-hidden="true"></div>
+                  <div class="back-inner">
+                    <div class="back-top">
+                      <span>PSF / baralho 01</span
+                      ><span id="backCount">50 cartas</span>
+                    </div>
+                    <div class="back-mid">
+                      <span class="back-q" aria-hidden="true">?</span>
+                      <span class="back-title">Perguntas<br />sem filtro</span>
+                      <span class="back-sub">toque para revelar</span>
+                    </div>
+                    <div class="back-bottom">
+                      <span>quebra-gelo</span
+                      ><span class="back-star" aria-hidden="true"></span
+                      ><span>conexão real</span>
+                    </div>
                   </div>
-                  <div class="back-bottom"><span>quebra-gelo</span><span class="back-star" aria-hidden="true"></span><span>conexão real</span></div>
                 </div>
-              </div>
 
-              <div class="card-face card-front">
-                <div class="front-top">
-                  <span class="cat-pill"><span class="cat-dot" aria-hidden="true"></span><span id="catName">Carta</span></span>
-                  <span class="card-num" id="cardNum">— / 50</span>
-                </div>
-                <p class="question" id="question" aria-live="polite"></p>
-                <div class="front-bottom">
-                  <span>respira · ouve · responde</span>
-                  <span class="front-mark">PSF</span>
+                <div class="card-face card-front">
+                  <div class="front-top">
+                    <span class="cat-pill"
+                      ><span class="cat-dot" aria-hidden="true"></span
+                      ><span id="catName">Carta</span></span
+                    >
+                    <span class="card-num" id="cardNum">— / 50</span>
+                  </div>
+                  <p class="question" id="question" aria-live="polite"></p>
+                  <div class="front-bottom">
+                    <span>respira · ouve · responde</span>
+                    <span class="front-mark">PSF</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="table-actions">
-        <button class="draw-btn" id="drawBtn" type="button">
-          <span class="draw-label">Tirar pergunta</span>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
-          </svg>
-        </button>
-        <p class="hint">ou aperte <kbd>espaço</kbd> · toque no baralho</p>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <img class="footer-logo" src="assets/rede-logo.png" alt="" width="295" height="320" loading="lazy">
-        <div class="footer-id">
-          <span class="footer-network">Rede</span>
-          <span class="footer-church">A Igreja</span>
+        <div class="table-actions">
+          <button class="draw-btn" id="drawBtn" type="button">
+            <span class="draw-label">Tirar pergunta</span>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.4"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14" />
+              <path d="m13 6 6 6-6 6" />
+            </svg>
+          </button>
+          <p class="hint">ou aperte <kbd>espaço</kbd> · toque no baralho</p>
         </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <img
+            class="footer-logo"
+            src="assets/rede-logo.png"
+            alt=""
+            width="295"
+            height="320"
+            loading="lazy"
+          />
+          <div class="footer-id">
+            <span class="footer-network">Rede</span>
+            <span class="footer-church">A Igreja</span>
+          </div>
+        </div>
+      <div class="footer-contact">
+        <address class="footer-address">
+          <span class="footer-label">Onde a gente se encontra</span>
+          Av. Champagnat, 647 · Praia da Costa<br>
+          Em frente ao McDonald's
+        </address>
+        <a class="footer-social" href="https://www.instagram.com/rede.aigreja/" target="_blank" rel="noopener noreferrer" aria-label="Instagram da Rede: @rede.aigreja">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/>
+            <circle cx="12" cy="12" r="4.2"/>
+            <circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"/>
+          </svg>
+          <span>@rede.aigreja</span>
+        </a>
       </div>
-      <address class="footer-address">
-        <span class="footer-label">Onde a gente se encontra</span>
-        Av. Champagnat, 647 · Praia da Costa<br>
-        Em frente ao McDonald's
-      </address>
-    </div>
-  </footer>
+      </div>
+    </footer>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-  <div class="fx" id="fx" aria-hidden="true"></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="fx" id="fx" aria-hidden="true"></div>
 
-<script>
-(function(){
-  "use strict";
+    <script>
+      (function () {
+        "use strict";
 
-  var CATEGORIES = {
-    leve:       { label: "Leve",       color: "#8CF0A8" },
-    pressao:    { label: "Pressão",    color: "#FF7043" },
-    identidade: { label: "Identidade", color: "#C9F94A" },
-    habitos:    { label: "Hábitos",    color: "#6FD3FF" },
-    conexao:    { label: "Conexão",    color: "#FF8FB1" },
-    sonhos:     { label: "Sonhos",     color: "#B69CFF" },
-    sentido:    { label: "Sentido",    color: "#FFC24A" }
-  };
+        var CATEGORIES = {
+          leve: { label: "Leve", color: "#8CF0A8" },
+          pressao: { label: "Pressão", color: "#FF7043" },
+          identidade: { label: "Identidade", color: "#C9F94A" },
+          habitos: { label: "Hábitos", color: "#6FD3FF" },
+          conexao: { label: "Conexão", color: "#FF8FB1" },
+          sonhos: { label: "Sonhos", color: "#B69CFF" },
+          sentido: { label: "Sentido", color: "#FFC24A" },
+        };
 
-  var QUESTIONS = [
-    { cat: "leve", q: "Qual foi a melhor coisa que aconteceu com você essa semana?" },
-    { cat: "leve", q: "O que você tem escutado no repeat ultimamente?" },
-    { cat: "leve", q: "Qual foi o último rolê que realmente valeu a pena?" },
-    { cat: "leve", q: "Se a sua vida fosse um filme, qual seria o título?" },
-    { cat: "leve", q: "Qual talento escondido você tem que quase ninguém conhece?" },
-    { cat: "leve", q: "Qual foi a maior mancada sua que hoje você dá risada?" },
-    { cat: "leve", q: "Se você pudesse jantar com alguém, vivo ou morto, quem seria?" },
-    { cat: "leve", q: "O que você faz que ninguém imagina que você faz?" },
-    { cat: "leve", q: "Qual série ou filme te marcou de verdade? Por quê?" },
-    { cat: "leve", q: "Qual foi a última coisa que te fez rir de verdade?" },
+        var QUESTIONS = [
+          {
+            cat: "leve",
+            q: "Qual foi a melhor coisa que aconteceu com você essa semana?",
+          },
+          { cat: "leve", q: "O que você tem escutado no repeat ultimamente?" },
+          {
+            cat: "leve",
+            q: "Qual foi o último rolê que realmente valeu a pena?",
+          },
+          {
+            cat: "leve",
+            q: "Se a sua vida fosse um filme, qual seria o título?",
+          },
+          {
+            cat: "leve",
+            q: "Qual talento escondido você tem que quase ninguém conhece?",
+          },
+          {
+            cat: "leve",
+            q: "Qual foi a maior mancada sua que hoje você dá risada?",
+          },
+          {
+            cat: "leve",
+            q: "Se você pudesse jantar com alguém, vivo ou morto, quem seria?",
+          },
+          {
+            cat: "leve",
+            q: "O que você faz que ninguém imagina que você faz?",
+          },
+          {
+            cat: "leve",
+            q: "Qual série ou filme te marcou de verdade? Por quê?",
+          },
+          {
+            cat: "leve",
+            q: "Qual foi a última coisa que te fez rir de verdade?",
+          },
 
-    { cat: "pressao", q: "Qual foi a maior pressão que você sentiu esse ano?" },
-    { cat: "pressao", q: "O que mais te cobra um padrão que você não pediu?" },
-    { cat: "pressao", q: "Quando foi a última vez que você admitiu que não estava bem?" },
-    { cat: "pressao", q: "Qual expectativa dos outros você carrega até hoje?" },
-    { cat: "pressao", q: "O que você faz quando ninguém está vendo?" },
-    { cat: "pressao", q: "Se ninguém fosse julgar, o que você faria diferente amanhã?" },
-    { cat: "pressao", q: "Você já sentiu que precisava ser forte o tempo todo? Por quê?" },
+          {
+            cat: "pressao",
+            q: "Qual foi a maior pressão que você sentiu esse ano?",
+          },
+          {
+            cat: "pressao",
+            q: "O que mais te cobra um padrão que você não pediu?",
+          },
+          {
+            cat: "pressao",
+            q: "Quando foi a última vez que você admitiu que não estava bem?",
+          },
+          {
+            cat: "pressao",
+            q: "Qual expectativa dos outros você carrega até hoje?",
+          },
+          { cat: "pressao", q: "O que você faz quando ninguém está vendo?" },
+          {
+            cat: "pressao",
+            q: "Se ninguém fosse julgar, o que você faria diferente amanhã?",
+          },
+          {
+            cat: "pressao",
+            q: "Você já sentiu que precisava ser forte o tempo todo? Por quê?",
+          },
 
-    { cat: "identidade", q: "O que define um homem de verdade hoje?" },
-    { cat: "identidade", q: "O que te faz sentir respeitado?" },
-    { cat: "identidade", q: "Qual foi a última coisa que te deixou orgulhoso de você?" },
-    { cat: "identidade", q: "Quem é a pessoa que você mais admira? Por quê?" },
-    { cat: "identidade", q: "O que as pessoas costumam errar sobre você?" },
-    { cat: "identidade", q: "Se pudesse apagar um rótulo que colocaram em você, qual seria?" },
-    { cat: "identidade", q: "Qual parte de você acha que ninguém conhece?" },
+          { cat: "identidade", q: "O que define um homem de verdade hoje?" },
+          { cat: "identidade", q: "O que te faz sentir respeitado?" },
+          {
+            cat: "identidade",
+            q: "Qual foi a última coisa que te deixou orgulhoso de você?",
+          },
+          {
+            cat: "identidade",
+            q: "Quem é a pessoa que você mais admira? Por quê?",
+          },
+          {
+            cat: "identidade",
+            q: "O que as pessoas costumam errar sobre você?",
+          },
+          {
+            cat: "identidade",
+            q: "Se pudesse apagar um rótulo que colocaram em você, qual seria?",
+          },
+          {
+            cat: "identidade",
+            q: "Qual parte de você acha que ninguém conhece?",
+          },
 
-    { cat: "habitos", q: "Qual hábito você queria largar mas não consegue?" },
-    { cat: "habitos", q: "O que você faz pra desligar a cabeça?" },
-    { cat: "habitos", q: "Sem olhar: quanto tempo do seu dia você passa no celular?" },
-    { cat: "habitos", q: "Qual foi a última coisa que te viciou de verdade?" },
-    { cat: "habitos", q: "O que você faz quando bate a ansiedade?" },
-    { cat: "habitos", q: "Qual promessa você fez pra você mesmo e ainda não cumpriu?" },
-    { cat: "habitos", q: "O que você faz quando precisa de silêncio e não tem?" },
+          {
+            cat: "habitos",
+            q: "Qual hábito você queria largar mas não consegue?",
+          },
+          { cat: "habitos", q: "O que você faz pra desligar a cabeça?" },
+          {
+            cat: "habitos",
+            q: "Sem olhar: quanto tempo do seu dia você passa no celular?",
+          },
+          {
+            cat: "habitos",
+            q: "Qual foi a última coisa que te viciou de verdade?",
+          },
+          { cat: "habitos", q: "O que você faz quando bate a ansiedade?" },
+          {
+            cat: "habitos",
+            q: "Qual promessa você fez pra você mesmo e ainda não cumpriu?",
+          },
+          {
+            cat: "habitos",
+            q: "O que você faz quando precisa de silêncio e não tem?",
+          },
 
-    { cat: "conexao", q: "Quem foi a última pessoa que te ouviu de verdade?" },
-    { cat: "conexao", q: "O que é mais difícil pra você: pedir ajuda ou oferecer ajuda?" },
-    { cat: "conexao", q: "Qual amizade você sente falta e nunca disse?" },
-    { cat: "conexao", q: "O que te faz confiar em alguém?" },
-    { cat: "conexao", q: "Você já perdoou algo que achava impossível perdoar?" },
-    { cat: "conexao", q: "Quem você ligaria às 3 da manhã se precisasse?" },
-    { cat: "conexao", q: "Qual foi a última vez que alguém te surpreendeu de verdade?" },
+          {
+            cat: "conexao",
+            q: "Quem foi a última pessoa que te ouviu de verdade?",
+          },
+          {
+            cat: "conexao",
+            q: "O que é mais difícil pra você: pedir ajuda ou oferecer ajuda?",
+          },
+          { cat: "conexao", q: "Qual amizade você sente falta e nunca disse?" },
+          { cat: "conexao", q: "O que te faz confiar em alguém?" },
+          {
+            cat: "conexao",
+            q: "Você já perdoou algo que achava impossível perdoar?",
+          },
+          {
+            cat: "conexao",
+            q: "Quem você ligaria às 3 da manhã se precisasse?",
+          },
+          {
+            cat: "conexao",
+            q: "Qual foi a última vez que alguém te surpreendeu de verdade?",
+          },
 
-    { cat: "sonhos", q: "Qual é o sonho que você tem vergonha de contar?" },
-    { cat: "sonhos", q: "O que te dá medo no futuro?" },
-    { cat: "sonhos", q: "Se dinheiro não fosse problema, o que você faria amanhã?" },
-    { cat: "sonhos", q: "Qual foi a decisão mais corajosa que você já tomou?" },
-    { cat: "sonhos", q: "O que você quer que seja diferente na sua vida daqui a um ano?" },
-    { cat: "sonhos", q: "Que conselho você daria pro você de 15 anos?" },
+          {
+            cat: "sonhos",
+            q: "Qual é o sonho que você tem vergonha de contar?",
+          },
+          { cat: "sonhos", q: "O que te dá medo no futuro?" },
+          {
+            cat: "sonhos",
+            q: "Se dinheiro não fosse problema, o que você faria amanhã?",
+          },
+          {
+            cat: "sonhos",
+            q: "Qual foi a decisão mais corajosa que você já tomou?",
+          },
+          {
+            cat: "sonhos",
+            q: "O que você quer que seja diferente na sua vida daqui a um ano?",
+          },
+          { cat: "sonhos", q: "Que conselho você daria pro você de 15 anos?" },
 
-    { cat: "sentido", q: "Em que você acredita quando tudo desaba?" },
-    { cat: "sentido", q: "Você já sentiu que algo maior estava te guiando?" },
-    { cat: "sentido", q: "Se pudesse fazer uma pergunta pra Deus agora, qual seria?" },
-    { cat: "sentido", q: "O que te dá esperança quando as coisas não fazem sentido?" },
-    { cat: "sentido", q: "Qual foi a última vez que você se sentiu realmente em paz?" },
-    { cat: "sentido", q: "O que você acha que falta na sua vida hoje?" }
-  ];
+          { cat: "sentido", q: "Em que você acredita quando tudo desaba?" },
+          {
+            cat: "sentido",
+            q: "Você já sentiu que algo maior estava te guiando?",
+          },
+          {
+            cat: "sentido",
+            q: "Se pudesse fazer uma pergunta pra Deus agora, qual seria?",
+          },
+          {
+            cat: "sentido",
+            q: "O que te dá esperança quando as coisas não fazem sentido?",
+          },
+          {
+            cat: "sentido",
+            q: "Qual foi a última vez que você se sentiu realmente em paz?",
+          },
+          { cat: "sentido", q: "O que você acha que falta na sua vida hoje?" },
+        ];
 
-  var LEVELS = [
-    [0, "Pronto pra começar"],
-    [1, "Quebrando o gelo"],
-    [3, "Aquecendo"],
-    [6, "Na real"],
-    [10, "Sem filtro"],
-    [15, "Conexão real"]
-  ];
+        var LEVELS = [
+          [0, "Pronto pra começar"],
+          [1, "Quebrando o gelo"],
+          [3, "Aquecendo"],
+          [6, "Na real"],
+          [10, "Sem filtro"],
+          [15, "Conexão real"],
+        ];
 
-  var deck = document.getElementById("deck");
-  var card = document.getElementById("card");
-  var questionEl = document.getElementById("question");
-  var catName = document.getElementById("catName");
-  var cardNum = document.getElementById("cardNum");
-  var drawBtn = document.getElementById("drawBtn");
-  var drawLabel = drawBtn.querySelector(".draw-label");
-  var resetBtn = document.getElementById("resetBtn");
-  var soundBtn = document.getElementById("soundBtn");
-  var levelLabel = document.getElementById("levelLabel");
-  var meterFill = document.getElementById("meterFill");
-  var drawnCount = document.getElementById("drawnCount");
-  var deckMeta = document.getElementById("deckMeta");
-  var backCount = document.getElementById("backCount");
-  var toastEl = document.getElementById("toast");
-  var fx = document.getElementById("fx");
+        var deck = document.getElementById("deck");
+        var card = document.getElementById("card");
+        var questionEl = document.getElementById("question");
+        var catName = document.getElementById("catName");
+        var cardNum = document.getElementById("cardNum");
+        var drawBtn = document.getElementById("drawBtn");
+        var drawLabel = drawBtn.querySelector(".draw-label");
+        var resetBtn = document.getElementById("resetBtn");
+        var soundBtn = document.getElementById("soundBtn");
+        var levelLabel = document.getElementById("levelLabel");
+        var meterFill = document.getElementById("meterFill");
+        var drawnCount = document.getElementById("drawnCount");
+        var deckMeta = document.getElementById("deckMeta");
+        var backCount = document.getElementById("backCount");
+        var toastEl = document.getElementById("toast");
+        var fx = document.getElementById("fx");
 
-  deckMeta.textContent = "Baralho da conexão · " + QUESTIONS.length + " perguntas";
-  backCount.textContent = QUESTIONS.length + " cartas";
-  cardNum.textContent = "— / " + QUESTIONS.length;
+        deckMeta.textContent =
+          "Baralho da conexão · " + QUESTIONS.length + " perguntas";
+        backCount.textContent = QUESTIONS.length + " cartas";
+        cardNum.textContent = "— / " + QUESTIONS.length;
 
-  var reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-  function reduce(){ return reduceQuery.matches; }
-  function wait(ms){ return new Promise(function(resolve){ setTimeout(resolve, ms); }); }
+        var reduceQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+        function reduce() {
+          return reduceQuery.matches;
+        }
+        function wait(ms) {
+          return new Promise(function (resolve) {
+            setTimeout(resolve, ms);
+          });
+        }
 
-  var bag = [];
-  var drawn = 0;
-  var current = null;
-  var busy = false;
-  var toastTimer = null;
+        var bag = [];
+        var drawn = 0;
+        var current = null;
+        var busy = false;
+        var toastTimer = null;
 
-  function shuffle(arr){
-    for (var i = arr.length - 1; i > 0; i--){
-      var j = Math.floor(Math.random() * (i + 1));
-      var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
-    }
-    return arr;
-  }
+        function shuffle(arr) {
+          for (var i = arr.length - 1; i > 0; i--) {
+            var j = Math.floor(Math.random() * (i + 1));
+            var tmp = arr[i];
+            arr[i] = arr[j];
+            arr[j] = tmp;
+          }
+          return arr;
+        }
 
-  function buildBag(){
-    bag = shuffle(QUESTIONS.map(function(_, i){ return i; }));
-    var openers = [];
-    bag.forEach(function(qi, pos){ if (QUESTIONS[qi].cat === "leve") openers.push(pos); });
-    if (openers.length){
-      var pick = openers[Math.floor(Math.random() * openers.length)];
-      var last = bag.length - 1;
-      var tmp = bag[pick]; bag[pick] = bag[last]; bag[last] = tmp;
-    }
-  }
+        function buildBag() {
+          bag = shuffle(
+            QUESTIONS.map(function (_, i) {
+              return i;
+            }),
+          );
+          var openers = [];
+          bag.forEach(function (qi, pos) {
+            if (QUESTIONS[qi].cat === "leve") openers.push(pos);
+          });
+          if (openers.length) {
+            var pick = openers[Math.floor(Math.random() * openers.length)];
+            var last = bag.length - 1;
+            var tmp = bag[pick];
+            bag[pick] = bag[last];
+            bag[last] = tmp;
+          }
+        }
 
-  function nextQuestion(){
-    if (!bag.length){
-      buildBag();
-      showToast("Você viu todas. Embaralhamos de novo.");
-    }
-    var item = QUESTIONS[bag.pop()];
-    var cat = CATEGORIES[item.cat];
-    return { q: item.q, label: cat.label, color: cat.color };
-  }
+        function nextQuestion() {
+          if (!bag.length) {
+            buildBag();
+            showToast("Você viu todas. Embaralhamos de novo.");
+          }
+          var item = QUESTIONS[bag.pop()];
+          var cat = CATEGORIES[item.cat];
+          return { q: item.q, label: cat.label, color: cat.color };
+        }
 
-  function fitQuestion(){
-    var w = card.clientWidth || 320;
-    var base = w * 0.11;
-    var len = (current && current.q ? current.q.length : 0);
-    var factor = 1;
-    if (len > 48) factor = 0.88;
-    if (len > 72) factor = 0.78;
-    if (len > 100) factor = 0.69;
-    if (len > 135) factor = 0.61;
-    if (len > 175) factor = 0.55;
-    questionEl.style.fontSize = (base * factor).toFixed(1) + "px";
-  }
+        function fitQuestion() {
+          var w = card.clientWidth || 320;
+          var base = w * 0.11;
+          var len = current && current.q ? current.q.length : 0;
+          var factor = 1;
+          if (len > 48) factor = 0.88;
+          if (len > 72) factor = 0.78;
+          if (len > 100) factor = 0.69;
+          if (len > 135) factor = 0.61;
+          if (len > 175) factor = 0.55;
+          questionEl.style.fontSize = (base * factor).toFixed(1) + "px";
+        }
 
-  function applyQuestion(q){
-    current = q;
-    card.style.setProperty("--cat", q.color);
-    catName.textContent = q.label;
-    questionEl.textContent = q.q;
-    cardNum.textContent = String(drawn).padStart(2, "0") + " / " + QUESTIONS.length;
-    fitQuestion();
-  }
+        function applyQuestion(q) {
+          current = q;
+          card.style.setProperty("--cat", q.color);
+          catName.textContent = q.label;
+          questionEl.textContent = q.q;
+          cardNum.textContent =
+            String(drawn).padStart(2, "0") + " / " + QUESTIONS.length;
+          fitQuestion();
+        }
 
-  function updateStatus(){
-    drawnCount.textContent = String(drawn);
-    var name = LEVELS[0][1];
-    for (var i = 0; i < LEVELS.length; i++){
-      if (drawn >= LEVELS[i][0]) name = LEVELS[i][1];
-    }
-    levelLabel.textContent = name;
-    meterFill.style.width = Math.min(drawn / 15, 1) * 100 + "%";
-  }
+        function updateStatus() {
+          drawnCount.textContent = String(drawn);
+          var name = LEVELS[0][1];
+          for (var i = 0; i < LEVELS.length; i++) {
+            if (drawn >= LEVELS[i][0]) name = LEVELS[i][1];
+          }
+          levelLabel.textContent = name;
+          meterFill.style.width = Math.min(drawn / 15, 1) * 100 + "%";
+        }
 
-  function updateButton(){
-    drawLabel.textContent = current ? "Próxima pergunta" : "Tirar pergunta";
-    drawBtn.setAttribute("aria-label", current ? "Tirar a próxima pergunta" : "Tirar uma pergunta");
-  }
+        function updateButton() {
+          drawLabel.textContent = current
+            ? "Próxima pergunta"
+            : "Tirar pergunta";
+          drawBtn.setAttribute(
+            "aria-label",
+            current ? "Tirar a próxima pergunta" : "Tirar uma pergunta",
+          );
+        }
 
-  function revealCard(){
-    if (window.innerWidth > 980) return;
-    var rect = card.getBoundingClientRect();
-    var vh = window.innerHeight || document.documentElement.clientHeight;
-    if (rect.top < 8 || rect.bottom > vh - 8){
-      try {
-        deck.scrollIntoView({ behavior: reduce() ? "auto" : "smooth", block: "center" });
-      } catch(e){
-        deck.scrollIntoView();
-      }
-    }
-  }
+        function revealCard() {
+          if (window.innerWidth > 980) return;
+          var rect = card.getBoundingClientRect();
+          var vh = window.innerHeight || document.documentElement.clientHeight;
+          if (rect.top < 8 || rect.bottom > vh - 8) {
+            try {
+              deck.scrollIntoView({
+                behavior: reduce() ? "auto" : "smooth",
+                block: "center",
+              });
+            } catch (e) {
+              deck.scrollIntoView();
+            }
+          }
+        }
 
-  function showToast(msg){
-    toastEl.textContent = msg;
-    toastEl.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function(){ toastEl.classList.remove("show"); }, 2800);
-  }
+        function showToast(msg) {
+          toastEl.textContent = msg;
+          toastEl.classList.add("show");
+          clearTimeout(toastTimer);
+          toastTimer = setTimeout(function () {
+            toastEl.classList.remove("show");
+          }, 2800);
+        }
 
-  async function drawCard(){
-    if (busy) return;
-    busy = true;
-    drawBtn.classList.add("is-busy");
-    drawBtn.setAttribute("aria-busy", "true");
+        async function drawCard() {
+          if (busy) return;
+          busy = true;
+          drawBtn.classList.add("is-busy");
+          drawBtn.setAttribute("aria-busy", "true");
 
-    var isNext = !!current;
-    var q = nextQuestion();
-    drawn += 1;
+          var isNext = !!current;
+          var q = nextQuestion();
+          drawn += 1;
 
-    if (isNext){
-      playFlick();
-      card.classList.add("exiting");
-      await wait(reduce() ? 20 : 380);
-      card.classList.add("no-transition");
-      card.classList.remove("exiting", "flipped");
-      applyQuestion(q);
-      card.classList.remove("no-transition");
-      void card.offsetWidth;
-      card.classList.add("flipped");
-    } else {
-      applyQuestion(q);
-      void card.offsetWidth;
-      card.classList.add("flipped");
-      playFlick();
-    }
+          if (isNext) {
+            playFlick();
+            card.classList.add("exiting");
+            await wait(reduce() ? 20 : 380);
+            card.classList.add("no-transition");
+            card.classList.remove("exiting", "flipped");
+            applyQuestion(q);
+            card.classList.remove("no-transition");
+            void card.offsetWidth;
+            card.classList.add("flipped");
+          } else {
+            applyQuestion(q);
+            void card.offsetWidth;
+            card.classList.add("flipped");
+            playFlick();
+          }
 
-    deck.classList.add("is-revealed");
-    updateStatus();
-    updateButton();
+          deck.classList.add("is-revealed");
+          updateStatus();
+          updateButton();
 
-    setTimeout(function(){
-      playReveal();
-      burst(q);
-      revealCard();
-    }, reduce() ? 0 : 250);
+          setTimeout(
+            function () {
+              playReveal();
+              burst(q);
+              revealCard();
+            },
+            reduce() ? 0 : 250,
+          );
 
-    await wait(reduce() ? 30 : 800);
-    busy = false;
-    drawBtn.classList.remove("is-busy");
-    drawBtn.setAttribute("aria-busy", "false");
-  }
+          await wait(reduce() ? 30 : 800);
+          busy = false;
+          drawBtn.classList.remove("is-busy");
+          drawBtn.setAttribute("aria-busy", "false");
+        }
 
-  async function resetDeck(){
-    if (busy) return;
-    busy = true;
+        async function resetDeck() {
+          if (busy) return;
+          busy = true;
 
-    if (current){
-      playFlick();
-      card.classList.add("exiting");
-      await wait(reduce() ? 20 : 380);
-      card.classList.add("no-transition");
-      card.classList.remove("exiting", "flipped");
-      card.classList.remove("no-transition");
-      current = null;
-    }
+          if (current) {
+            playFlick();
+            card.classList.add("exiting");
+            await wait(reduce() ? 20 : 380);
+            card.classList.add("no-transition");
+            card.classList.remove("exiting", "flipped");
+            card.classList.remove("no-transition");
+            current = null;
+          }
 
-    buildBag();
-    drawn = 0;
-    deck.classList.remove("is-revealed");
-    card.style.setProperty("--cat", "var(--accent)");
-    catName.textContent = "Carta";
-    questionEl.textContent = "";
-    questionEl.style.fontSize = "";
-    cardNum.textContent = "— / " + QUESTIONS.length;
-    updateStatus();
-    updateButton();
-    showToast("Baralho embaralhado. Bora de novo.");
-    busy = false;
-  }
+          buildBag();
+          drawn = 0;
+          deck.classList.remove("is-revealed");
+          card.style.setProperty("--cat", "var(--accent)");
+          catName.textContent = "Carta";
+          questionEl.textContent = "";
+          questionEl.style.fontSize = "";
+          cardNum.textContent = "— / " + QUESTIONS.length;
+          updateStatus();
+          updateButton();
+          showToast("Baralho embaralhado. Bora de novo.");
+          busy = false;
+        }
 
-  /* ---------- sound ---------- */
-  var audioCtx = null;
-  var storedSound = null;
-  try { storedSound = localStorage.getItem("psf-sound"); } catch(e){}
-  var muted = storedSound === "off";
+        /* ---------- sound ---------- */
+        var audioCtx = null;
+        var storedSound = null;
+        try {
+          storedSound = localStorage.getItem("psf-sound");
+        } catch (e) {}
+        var muted = storedSound === "off";
 
-  function getAudio(){
-    if (muted) return null;
-    var AC = window.AudioContext || window.webkitAudioContext;
-    if (!AC) return null;
-    if (!audioCtx) audioCtx = new AC();
-    if (audioCtx.state === "suspended"){ audioCtx.resume().catch(function(){}); }
-    return audioCtx;
-  }
+        function getAudio() {
+          if (muted) return null;
+          var AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) return null;
+          if (!audioCtx) audioCtx = new AC();
+          if (audioCtx.state === "suspended") {
+            audioCtx.resume().catch(function () {});
+          }
+          return audioCtx;
+        }
 
-  function playFlick(){
-    var ac = getAudio();
-    if (!ac) return;
-    try {
-      var dur = 0.16;
-      var buffer = ac.createBuffer(1, Math.floor(ac.sampleRate * dur), ac.sampleRate);
-      var data = buffer.getChannelData(0);
-      for (var i = 0; i < data.length; i++){
-        var fade = Math.pow(1 - i / data.length, 2.4);
-        data[i] = (Math.random() * 2 - 1) * fade;
-      }
-      var src = ac.createBufferSource();
-      src.buffer = buffer;
-      var filter = ac.createBiquadFilter();
-      filter.type = "bandpass";
-      filter.frequency.value = 2100;
-      filter.Q.value = 0.7;
-      var gain = ac.createGain();
-      gain.gain.setValueAtTime(0.10, ac.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
-      src.connect(filter);
-      filter.connect(gain);
-      gain.connect(ac.destination);
-      src.start();
-    } catch(e){}
-  }
+        function playFlick() {
+          var ac = getAudio();
+          if (!ac) return;
+          try {
+            var dur = 0.16;
+            var buffer = ac.createBuffer(
+              1,
+              Math.floor(ac.sampleRate * dur),
+              ac.sampleRate,
+            );
+            var data = buffer.getChannelData(0);
+            for (var i = 0; i < data.length; i++) {
+              var fade = Math.pow(1 - i / data.length, 2.4);
+              data[i] = (Math.random() * 2 - 1) * fade;
+            }
+            var src = ac.createBufferSource();
+            src.buffer = buffer;
+            var filter = ac.createBiquadFilter();
+            filter.type = "bandpass";
+            filter.frequency.value = 2100;
+            filter.Q.value = 0.7;
+            var gain = ac.createGain();
+            gain.gain.setValueAtTime(0.1, ac.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+            src.connect(filter);
+            filter.connect(gain);
+            gain.connect(ac.destination);
+            src.start();
+          } catch (e) {}
+        }
 
-  function playReveal(){
-    var ac = getAudio();
-    if (!ac) return;
-    try {
-      var t0 = ac.currentTime;
-      [659.25, 987.77].forEach(function(freq, i){
-        var osc = ac.createOscillator();
-        var gain = ac.createGain();
-        osc.type = "sine";
-        osc.frequency.value = freq;
-        var start = t0 + i * 0.07;
-        gain.gain.setValueAtTime(0, start);
-        gain.gain.linearRampToValueAtTime(0.045, start + 0.012);
-        gain.gain.exponentialRampToValueAtTime(0.001, start + 0.5);
-        osc.connect(gain);
-        gain.connect(ac.destination);
-        osc.start(start);
-        osc.stop(start + 0.55);
-      });
-    } catch(e){}
-  }
+        function playReveal() {
+          var ac = getAudio();
+          if (!ac) return;
+          try {
+            var t0 = ac.currentTime;
+            [659.25, 987.77].forEach(function (freq, i) {
+              var osc = ac.createOscillator();
+              var gain = ac.createGain();
+              osc.type = "sine";
+              osc.frequency.value = freq;
+              var start = t0 + i * 0.07;
+              gain.gain.setValueAtTime(0, start);
+              gain.gain.linearRampToValueAtTime(0.045, start + 0.012);
+              gain.gain.exponentialRampToValueAtTime(0.001, start + 0.5);
+              osc.connect(gain);
+              gain.connect(ac.destination);
+              osc.start(start);
+              osc.stop(start + 0.55);
+            });
+          } catch (e) {}
+        }
 
-  function syncSound(){
-    document.body.classList.toggle("muted", muted);
-    soundBtn.setAttribute("aria-pressed", String(!muted));
-    soundBtn.setAttribute("aria-label", muted ? "Ativar som" : "Desativar som");
-    soundBtn.title = muted ? "Ativar som" : "Desativar som";
-    try { localStorage.setItem("psf-sound", muted ? "off" : "on"); } catch(e){}
-  }
+        function syncSound() {
+          document.body.classList.toggle("muted", muted);
+          soundBtn.setAttribute("aria-pressed", String(!muted));
+          soundBtn.setAttribute(
+            "aria-label",
+            muted ? "Ativar som" : "Desativar som",
+          );
+          soundBtn.title = muted ? "Ativar som" : "Desativar som";
+          try {
+            localStorage.setItem("psf-sound", muted ? "off" : "on");
+          } catch (e) {}
+        }
 
-  /* ---------- fx ---------- */
-  function burst(q){
-    if (reduce() || !fx) return;
-    var rect = card.getBoundingClientRect();
-    if (!rect.width) return;
-    var cx = rect.left + rect.width / 2;
-    var cy = rect.top + rect.height / 2;
-    var accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#c9f94a";
-    var colors = [accent, (q && q.color) || accent, "#ffffff"];
+        /* ---------- fx ---------- */
+        function burst(q) {
+          if (reduce() || !fx) return;
+          var rect = card.getBoundingClientRect();
+          if (!rect.width) return;
+          var cx = rect.left + rect.width / 2;
+          var cy = rect.top + rect.height / 2;
+          var accent =
+            getComputedStyle(document.documentElement)
+              .getPropertyValue("--accent")
+              .trim() || "#c9f94a";
+          var colors = [accent, (q && q.color) || accent, "#ffffff"];
 
-    for (var i = 0; i < 16; i++){
-      var p = document.createElement("span");
-      var size = 3 + Math.random() * 5;
-      var color = colors[Math.floor(Math.random() * colors.length)];
-      p.style.cssText = "position:absolute;left:" + cx + "px;top:" + cy + "px;width:" + size +
-        "px;height:" + size + "px;border-radius:999px;background:" + color +
-        ";box-shadow:0 0 9px " + color + ";transform:translate(-50%,-50%);";
-      fx.appendChild(p);
-      var angle = Math.random() * Math.PI * 2;
-      var dist = 80 + Math.random() * 170;
-      var dx = Math.cos(angle) * dist;
-      var dy = Math.sin(angle) * dist;
-      var anim = p.animate([
-        { transform: "translate(-50%,-50%) scale(1)", opacity: 1 },
-        { transform: "translate(calc(-50% + " + dx + "px), calc(-50% + " + dy + "px)) scale(0)", opacity: 0 }
-      ], { duration: 620 + Math.random() * 480, easing: "cubic-bezier(.16,.84,.44,1)" });
-      anim.onfinish = (function(node){ return function(){ node.remove(); }; })(p);
-    }
+          for (var i = 0; i < 16; i++) {
+            var p = document.createElement("span");
+            var size = 3 + Math.random() * 5;
+            var color = colors[Math.floor(Math.random() * colors.length)];
+            p.style.cssText =
+              "position:absolute;left:" +
+              cx +
+              "px;top:" +
+              cy +
+              "px;width:" +
+              size +
+              "px;height:" +
+              size +
+              "px;border-radius:999px;background:" +
+              color +
+              ";box-shadow:0 0 9px " +
+              color +
+              ";transform:translate(-50%,-50%);";
+            fx.appendChild(p);
+            var angle = Math.random() * Math.PI * 2;
+            var dist = 80 + Math.random() * 170;
+            var dx = Math.cos(angle) * dist;
+            var dy = Math.sin(angle) * dist;
+            var anim = p.animate(
+              [
+                { transform: "translate(-50%,-50%) scale(1)", opacity: 1 },
+                {
+                  transform:
+                    "translate(calc(-50% + " +
+                    dx +
+                    "px), calc(-50% + " +
+                    dy +
+                    "px)) scale(0)",
+                  opacity: 0,
+                },
+              ],
+              {
+                duration: 620 + Math.random() * 480,
+                easing: "cubic-bezier(.16,.84,.44,1)",
+              },
+            );
+            anim.onfinish = (function (node) {
+              return function () {
+                node.remove();
+              };
+            })(p);
+          }
 
-    var ring = document.createElement("div");
-    ring.style.cssText = "position:absolute;left:" + cx + "px;top:" + cy + "px;width:130px;height:130px;border:1px solid " +
-      accent + ";border-radius:50%;transform:translate(-50%,-50%) scale(.2);opacity:.8;";
-    fx.appendChild(ring);
-    var ringAnim = ring.animate([
-      { transform: "translate(-50%,-50%) scale(.2)", opacity: 0.7 },
-      { transform: "translate(-50%,-50%) scale(2.3)", opacity: 0 }
-    ], { duration: 820, easing: "ease-out" });
-    ringAnim.onfinish = function(){ ring.remove(); };
-  }
+          var ring = document.createElement("div");
+          ring.style.cssText =
+            "position:absolute;left:" +
+            cx +
+            "px;top:" +
+            cy +
+            "px;width:130px;height:130px;border:1px solid " +
+            accent +
+            ";border-radius:50%;transform:translate(-50%,-50%) scale(.2);opacity:.8;";
+          fx.appendChild(ring);
+          var ringAnim = ring.animate(
+            [
+              { transform: "translate(-50%,-50%) scale(.2)", opacity: 0.7 },
+              { transform: "translate(-50%,-50%) scale(2.3)", opacity: 0 },
+            ],
+            { duration: 820, easing: "ease-out" },
+          );
+          ringAnim.onfinish = function () {
+            ring.remove();
+          };
+        }
 
-  /* ---------- events ---------- */
-  drawBtn.addEventListener("click", drawCard);
-  resetBtn.addEventListener("click", resetDeck);
+        /* ---------- events ---------- */
+        drawBtn.addEventListener("click", drawCard);
+        resetBtn.addEventListener("click", resetDeck);
 
-  deck.addEventListener("click", function(e){
-    if (e.target.closest && e.target.closest("button")) return;
-    drawCard();
-  });
+        deck.addEventListener("click", function (e) {
+          if (e.target.closest && e.target.closest("button")) return;
+          drawCard();
+        });
 
-  soundBtn.addEventListener("click", function(){
-    muted = !muted;
-    syncSound();
-    if (!muted){ getAudio(); playReveal(); }
-  });
+        soundBtn.addEventListener("click", function () {
+          muted = !muted;
+          syncSound();
+          if (!muted) {
+            getAudio();
+            playReveal();
+          }
+        });
 
-  document.addEventListener("keydown", function(e){
-    if (e.repeat) return;
-    if (e.code !== "Space" && e.code !== "Enter") return;
+        document.addEventListener("keydown", function (e) {
+          if (e.repeat) return;
+          if (e.code !== "Space" && e.code !== "Enter") return;
 
-    var t = e.target;
-    if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+          var t = e.target;
+          if (
+            t &&
+            (t.tagName === "INPUT" ||
+              t.tagName === "TEXTAREA" ||
+              t.isContentEditable)
+          )
+            return;
 
-    if (t && t.closest){
-      var btn = t.closest("button");
-      if (btn && btn.id !== "drawBtn") return;
-    }
+          if (t && t.closest) {
+            var btn = t.closest("button");
+            if (btn && btn.id !== "drawBtn") return;
+          }
 
-    e.preventDefault();
-    drawCard();
-  });
+          e.preventDefault();
+          drawCard();
+        });
 
-  window.addEventListener("resize", function(){
-    if (current) fitQuestion();
-  });
+        window.addEventListener("resize", function () {
+          if (current) fitQuestion();
+        });
 
-  /* ---------- boot ---------- */
-  syncSound();
-  buildBag();
-  updateStatus();
-  updateButton();
-})();
-</script>
-<script>
-  window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
-</script>
-<script defer src="/_vercel/speed-insights/script.js"></script>
-</body>
+        /* ---------- boot ---------- */
+        syncSound();
+        buildBag();
+        updateStatus();
+        updateButton();
+      })();
+    </script>
+    <script>
+      window.si =
+        window.si ||
+        function () {
+          (window.siq = window.siq || []).push(arguments);
+        };
+    </script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
+  </body>
 </html>

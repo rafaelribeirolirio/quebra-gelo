@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Perguntas Sem Filtro — quebra-gelo pra conversas reais</title>
-<meta name="description" content="Um baralho de 50 perguntas pra sair do automático, ouvir alguém de verdade e começar conversas que importam.">
+<title>Perguntas Sem Filtro · Rede</title>
+<meta name="description" content="Um baralho de 50 perguntas da Rede pra sair do automático, ouvir alguém de verdade e começar conversas que importam.">
 <meta name="theme-color" content="#07080a">
-<meta property="og:title" content="Perguntas Sem Filtro">
-<meta property="og:description" content="Puxe uma carta. 50 perguntas pra conversas reais.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23c9f94a'/%3E%3Ctext x='32' y='47' font-family='Arial Black,Arial' font-size='42' font-weight='900' text-anchor='middle' fill='%230a0c08'%3E%3F%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="Perguntas Sem Filtro · Rede">
+<meta property="og:description" content="Puxe uma carta. 50 perguntas pra conversas reais. Uma iniciativa Rede.">
+<link rel="icon" type="image/png" href="assets/rede-favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -63,12 +63,9 @@
     display:flex;align-items:center;justify-content:space-between;gap:16px;
   }
   .brand{display:flex;align-items:center;gap:13px;user-select:none}
-  .brand-mark{
-    width:44px;height:44px;flex:0 0 auto;border-radius:13px;
-    display:grid;place-items:center;background:var(--accent);color:#0a0c08;
-    font-family:var(--font-display);font-size:27px;line-height:1;padding-top:3px;
-    transform:rotate(-4deg);
-    box-shadow:0 0 0 1px rgba(0,0,0,.25),0 10px 30px -8px rgba(201,249,74,.55);
+  .brand-logo{
+    height:50px;width:auto;flex:0 0 auto;
+    filter:drop-shadow(0 4px 16px rgba(201,249,74,.2));
   }
   .brand-name{
     display:flex;flex-direction:column;line-height:1.02;
@@ -97,7 +94,7 @@
     display:grid;grid-template-columns:1.05fr .9fr;
     gap:clamp(30px,5vw,80px);
     align-items:center;
-    min-height:calc(100dvh - 90px);
+    min-height:calc(100dvh - 205px);
   }
   .intro{max-width:620px}
   .eyebrow{
@@ -106,6 +103,8 @@
     color:var(--muted);border:1px solid var(--line);background:rgba(255,255,255,.02);
     padding:8px 14px;border-radius:999px;
   }
+  .eyebrow-network{color:var(--accent);font-weight:800;letter-spacing:.19em}
+  .eyebrow-sep{width:1px;height:10px;background:rgba(255,255,255,.22)}
   .pulse-dot{
     width:6px;height:6px;border-radius:50%;background:var(--accent);
     box-shadow:0 0 0 0 rgba(201,249,74,.55);
@@ -344,6 +343,39 @@
     padding:2px 6px;color:rgba(243,244,240,.7);background:rgba(255,255,255,.03);
   }
 
+  /* ---------- footer ---------- */
+  .site-footer{
+    position:relative;z-index:2;
+    border-top:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(255,255,255,.015),rgba(0,0,0,0) 80%);
+  }
+  .footer-inner{
+    max-width:1280px;margin:0 auto;
+    padding:24px clamp(18px,4vw,48px) 32px;
+    display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap;
+  }
+  .footer-brand{display:flex;align-items:center;gap:14px}
+  .footer-logo{
+    height:60px;width:auto;
+    filter:drop-shadow(0 0 18px rgba(201,249,74,.16));
+  }
+  .footer-id{display:flex;flex-direction:column;gap:3px}
+  .footer-network{
+    font-family:var(--font-display);font-size:24px;line-height:.9;
+    letter-spacing:.06em;text-transform:uppercase;color:var(--text);
+  }
+  .footer-church{
+    font-size:9px;font-weight:800;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+  }
+  .footer-address{
+    font-style:normal;font-size:12px;line-height:1.7;color:var(--muted);text-align:right;
+  }
+  .footer-label{
+    display:block;margin-bottom:2px;
+    font-size:8.5px;font-weight:800;letter-spacing:.19em;text-transform:uppercase;
+    color:rgba(243,244,240,.38);
+  }
+
   /* ---------- toast / fx ---------- */
   .toast{
     position:fixed;left:50%;bottom:26px;z-index:60;
@@ -382,9 +414,13 @@
     .table{width:100%}
     .brand-name{font-size:11px}
   }
+  @media (max-width:700px){
+    .footer-inner{align-items:flex-start;flex-direction:column;gap:18px;padding-bottom:28px}
+    .footer-address{text-align:left}
+  }
   @media (max-width:560px){
     .topbar{padding:16px 18px}
-    .brand-mark{width:38px;height:38px;border-radius:11px;font-size:23px}
+    .brand-logo{height:42px}
     .brand-name{font-size:10px;letter-spacing:.16em}
     .icon-btn{width:38px;height:38px}
     h1{font-size:clamp(42px,12.5vw,58px)}
@@ -394,6 +430,8 @@
     .toast{white-space:normal;text-align:center;max-width:88vw;bottom:18px}
     .status{gap:24px}
     .count .status-kicker{max-width:none}
+    .footer-logo{height:52px}
+    .footer-network{font-size:22px}
   }
   @media (prefers-reduced-motion:reduce){
     *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
@@ -407,8 +445,8 @@
   <div class="noise" aria-hidden="true"></div>
 
   <header class="topbar">
-    <div class="brand" aria-label="Perguntas Sem Filtro">
-      <span class="brand-mark" aria-hidden="true">?</span>
+    <div class="brand" aria-label="Rede · Perguntas Sem Filtro">
+      <img class="brand-logo" src="assets/rede-logo.png" alt="" width="295" height="320">
       <span class="brand-name"><span>Perguntas</span><span>Sem Filtro</span></span>
     </div>
     <div class="topbar-actions">
@@ -430,7 +468,7 @@
 
   <main class="hero">
     <section class="intro">
-      <p class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span>quebra-gelo pra conversas reais</p>
+      <p class="eyebrow"><span class="pulse-dot" aria-hidden="true"></span><span class="eyebrow-network">Rede</span><span class="eyebrow-sep" aria-hidden="true"></span>quebra-gelo pra conversas reais</p>
       <h1><span>Puxe uma carta.</span><span class="accent">Sem filtro.</span></h1>
       <p class="sub"><strong>50 perguntas</strong> pra sair do automático e ouvir alguém de verdade. Sem resposta certa, sem pressa — só uma boa conversa começando.</p>
       <div class="status" aria-label="Progresso da sessão">
@@ -497,6 +535,23 @@
       </div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img class="footer-logo" src="assets/rede-logo.png" alt="" width="295" height="320" loading="lazy">
+        <div class="footer-id">
+          <span class="footer-network">Rede</span>
+          <span class="footer-church">A Igreja</span>
+        </div>
+      </div>
+      <address class="footer-address">
+        <span class="footer-label">Onde a gente se encontra</span>
+        Av. Champagnat, 647 · Praia da Costa<br>
+        Em frente ao McDonald's
+      </address>
+    </div>
+  </footer>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <div class="fx" id="fx" aria-hidden="true"></div>

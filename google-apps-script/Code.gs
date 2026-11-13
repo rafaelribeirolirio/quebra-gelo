@@ -1,3 +1,4 @@
+var SPREADSHEET_URL = "";
 var SHEET_NAME = "Leads";
 
 function doGet() {
@@ -24,7 +25,7 @@ function doPost(e) {
       return json({ ok: false, error: "Campos obrigatórios." });
     }
 
-    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    var ss = getSpreadsheet();
     var sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
 
     if (sheet.getLastRow() === 0) {
@@ -48,6 +49,25 @@ function doPost(e) {
   } finally {
     if (lock.hasLock()) lock.releaseLock();
   }
+}
+
+function getSpreadsheet() {
+  if (SPREADSHEET_URL) {
+    return SpreadsheetApp.openById(spreadsheetId(SPREADSHEET_URL));
+  }
+  var active = SpreadsheetApp.getActiveSpreadsheet();
+  if (!active) {
+    throw new Error(
+      "Configure SPREADSHEET_URL com a URL da planilha que deve receber os dados.",
+    );
+  }
+  return active;
+}
+
+function spreadsheetId(value) {
+  var text = String(value || "").trim();
+  var match = text.match(/\/d\/([a-zA-Z0-9-_]+)/);
+  return match ? match[1] : text;
 }
 
 function clean(value, max) {

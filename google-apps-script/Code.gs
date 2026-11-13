@@ -19,6 +19,7 @@ function doPost(e) {
     var whatsapp = clean(data.whatsapp, 30);
     var bairro = clean(data.bairro, 120);
     var dia = clean(data.dia, 40);
+    var igreja = clean(data.igreja, 20);
     var origem = clean(data.origem, 80) || "Perguntas Sem Filtro";
 
     if (!nome || !whatsapp || !bairro || !dia) {
@@ -36,12 +37,23 @@ function doPost(e) {
         "Bairro",
         "Dia livre",
         "Origem",
+        "Já é de igreja?",
       ]);
-      sheet.getRange(1, 1, 1, 6).setFontWeight("bold");
+      sheet.getRange(1, 1, 1, 7).setFontWeight("bold");
       sheet.setFrozenRows(1);
+    } else if (sheet.getRange(1, 7).getValue() !== "Já é de igreja?") {
+      sheet.getRange(1, 7).setValue("Já é de igreja?");
     }
 
-    sheet.appendRow([new Date(), nome, whatsapp, bairro, dia, origem]);
+    sheet.appendRow([
+      new Date(),
+      nome,
+      whatsapp,
+      bairro,
+      dia,
+      origem,
+      igreja,
+    ]);
 
     return json({ ok: true });
   } catch (err) {

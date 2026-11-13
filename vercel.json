@@ -1,0 +1,15 @@
+{
+  "redirects": [
+    {
+      "source": "/perguntas.html",
+      "destination": "/perguntas",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/perguntas",
+      "destination": "/perguntas.html"
+    }
+  ]
+}

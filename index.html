@@ -990,6 +990,78 @@
         text-transform: uppercase;
         color: rgba(243, 244, 240, 0.5);
       }
+      .field-wide {
+        grid-column: 1 / -1;
+      }
+      .field-days {
+        display: block;
+        margin-top: 14px;
+        padding: 0;
+        border: 0;
+        min-width: 0;
+      }
+      .field legend {
+        margin-bottom: 6px;
+        padding: 0;
+        font-size: 8.5px;
+        font-weight: 800;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: rgba(243, 244, 240, 0.5);
+      }
+      .day-options {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .day-option {
+        position: relative;
+      }
+      .field .day-option input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        border: 0;
+        background: none;
+        opacity: 0;
+        pointer-events: none;
+      }
+      .day-option span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 10px 8px;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.035);
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 600;
+        line-height: 1.25;
+        text-align: center;
+        cursor: pointer;
+        transition:
+          border-color 0.2s ease,
+          background 0.2s ease,
+          color 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      .day-option:hover span {
+        border-color: rgba(255, 255, 255, 0.25);
+        color: var(--text);
+      }
+      .day-option input:checked + span {
+        border-color: rgba(201, 249, 74, 0.65);
+        background: rgba(201, 249, 74, 0.08);
+        color: var(--text);
+        box-shadow: 0 0 0 3px rgba(201, 249, 74, 0.1);
+      }
+      .day-option input:focus-visible + span {
+        outline: 2px solid var(--accent);
+        outline-offset: 2px;
+      }
       .field input,
       .field select {
         width: 100%;
@@ -1781,7 +1853,7 @@
                 required
               />
             </label>
-            <label class="field">
+            <label class="field field-wide">
               <span>Bairro onde mora</span>
               <input
                 id="leadBairro"
@@ -1792,21 +1864,30 @@
                 required
               />
             </label>
-            <label class="field">
-              <span>Dia livre na semana</span>
-              <select id="leadDia" name="dia" required>
-                <option value="" selected disabled>Escolha um dia</option>
-                <option>Segunda-feira</option>
-                <option>Terça-feira</option>
-                <option>Quarta-feira</option>
-                <option>Quinta-feira</option>
-                <option>Sexta-feira</option>
-                <option>Sábado</option>
-                <option>Domingo</option>
-                <option>Tenho mais de um dia</option>
-              </select>
-            </label>
           </div>
+
+          <fieldset class="field field-days">
+            <legend>Disponibilidade à noite</legend>
+            <div class="day-options">
+              <label class="day-option">
+                <input type="radio" name="dia" value="Quinta-feira" required />
+                <span>Quinta-feira</span>
+              </label>
+              <label class="day-option">
+                <input type="radio" name="dia" value="Sexta-feira" required />
+                <span>Sexta-feira</span>
+              </label>
+              <label class="day-option">
+                <input
+                  type="radio"
+                  name="dia"
+                  value="Quinta e sexta"
+                  required
+                />
+                <span>Quinta e sexta</span>
+              </label>
+            </div>
+          </fieldset>
 
           <input
             class="hp"
@@ -2124,7 +2205,6 @@
         var leadName = document.getElementById("leadName");
         var leadWhats = document.getElementById("leadWhats");
         var leadBairro = document.getElementById("leadBairro");
-        var leadDia = document.getElementById("leadDia");
         var leadWebsite = document.getElementById("leadWebsite");
         var leadSubmit = document.getElementById("leadSubmit");
         var leadSubmitLabel = leadSubmit.querySelector(".lead-submit-label");
@@ -2450,6 +2530,12 @@
             return;
           }
 
+          var diaEl = leadForm.querySelector('input[name="dia"]:checked');
+          if (!diaEl) {
+            showLeadError("Escolha sua disponibilidade à noite.");
+            return;
+          }
+
           var digits = leadWhats.value.replace(/\D/g, "");
           if (digits.length < 10 || digits.length > 13) {
             leadWhats.setCustomValidity("Digite um WhatsApp válido com DDD.");
@@ -2480,7 +2566,7 @@
                 nome: leadName.value.trim(),
                 whatsapp: leadWhats.value.trim(),
                 bairro: leadBairro.value.trim(),
-                dia: leadDia.value,
+                dia: diaEl.value,
                 origem: "Perguntas Sem Filtro",
                 website: leadWebsite.value,
               }),
